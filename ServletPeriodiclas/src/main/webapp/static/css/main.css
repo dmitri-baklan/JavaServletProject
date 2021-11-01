@@ -1,0 +1,124 @@
+body {
+    background-color: #E8F2FE !important;
+}
+
+
+table {
+    table-layout: fixed;
+
+}
+
+.titleColumn {
+    max-width: 550px;
+    width: 50%;
+}
+
+.errorContent {
+    width: 200px !important;
+}
+
+
+.greeting {
+    height: 300px;
+    margin: 0 auto;
+}
+
+.sectionMainContent {
+    max-width: 1200px;
+    margin: 0px auto;
+}
+
+.labelForInput {
+    text-align: left;
+    font-size: 15px;
+    float: left;
+}
+
+.formFrame {
+    max-width: 60%;
+    margin: 0px auto;
+}
+
+#defLinkHeader {
+    color: white;
+    text-decoration: none;
+}
+
+.findFrame {
+    max-width: 43.5%;
+    margin: 0px auto;
+}
+
+#signin {
+    color: white;
+}
+
+.centerButton {
+    margin-top: 100px;
+}
+
+.productsMainFrame {
+    margin-top: 100px;
+}
+
+.sectionMainContent .media {
+    margin-top: 40px;
+}
+
+.headSign {
+    margin: 0 auto;
+    padding-top: 200px;
+    margin-top: 200px;
+}
+
+
+.form-signin, .form-signup {
+
+    max-width: 500px;
+    padding: 15px;
+    margin: auto;
+}
+
+.imageAva {
+    padding: 10px;
+    border: 3px solid;
+    border-radius: 100%;
+}
+
+.whiteBorderButton {
+    border: 1px solid black;
+    padding: 4px;
+}
+
+
+.form-signin .form-control, .form-signup .form-control {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.form-signin .form-control:focus {
+    z-index: 2;
+}
+
+.form-signin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+
+
+/*.float_right{*/
+/*    float: left;*/
+/*    margin: 30px;*/
+/*}*/
+
