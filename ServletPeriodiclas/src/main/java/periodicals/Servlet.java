@@ -3,6 +3,10 @@ package periodicals;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import periodicals.controller.command.*;
+import periodicals.controller.command.guest.LoginCommand;
+import periodicals.controller.command.guest.RegistrationCommand;
+import periodicals.controller.command.guest.WelcomeCommand;
+import periodicals.controller.command.user.LogoutCommand;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -42,6 +46,25 @@ public class Servlet extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //TODO:TEST METHOD find user by email CALL!!
+//        JDBCFactoryDAO factoryDAO = new JDBCFactoryDAO();
+//        UserDAO userDAO = factoryDAO.createUserDAO();
+////        Integer offset;
+////                    Integer limit;
+////                    String orderBy;
+////                    String direction;
+//        Pageable pageable = Pageable.builder()
+//                .offset(0)
+//                .limit(4)
+//                        .orderBy("name")
+//                                .direction("ASCENDING").build();
+//        try{
+//            userDAO.findByRole(Role.READER,pageable);
+//        }
+//        catch(Exception ex){
+//
+//        }
+//
 
         String path = request.getRequestURI();
         LOGGER.info("path:{}", path);

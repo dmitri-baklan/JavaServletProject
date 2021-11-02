@@ -20,7 +20,7 @@ public class ConnectionDB {
         if(dataSource == null){
             BasicDataSource basicDataSource = new BasicDataSource();
             basicDataSource.setDriverClassName(property.getProperty("db.main.driver"));
-            basicDataSource.setUrl(property.getProperty("db.main.url"));
+            basicDataSource.setUrl(String.format("%s://localhost:%s/%s",property.getProperty("db.main.url"), property.getProperty("db.main.port"), property.getProperty("db.main.name")));
             basicDataSource.setUsername(property.getProperty("db.main.username"));
             basicDataSource.setPassword(property.getProperty("db.main.password"));
             basicDataSource.setMaxOpenPreparedStatements(100);

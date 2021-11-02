@@ -1,18 +1,22 @@
 package periodicals.model.dao.mapper;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import periodicals.dto.Page;
+import periodicals.model.dao.impl.JDBCUserDAO;
+import periodicals.model.dao.pageable.Pageable;
 import periodicals.model.entity.user.User;
 import periodicals.model.entity.user.authority.Role;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class UserMapper{ //implements ObjectMapper<User>{
+    private static final Logger LOGGER = LoggerFactory.getLogger(JDBCUserDAO.class.getName());
+
 //    private Long id;
 //    private String email;
 //    private String password;
@@ -23,24 +27,35 @@ public class UserMapper{ //implements ObjectMapper<User>{
 //    private boolean isActive = true;
 
     public static User extractFromResultSet(ResultSet result) throws SQLException {
-        return User.builder()
-                .id(result.getLong("id"))
-                .email(result.getString("email"))
-                .password(result.getString("password"))
-                .name(result.getString("name"))
-                .surname(result.getString("surname"))
-                .role(Role.valueOf(result.getString("role")))
-                .balance(result.getLong("balance"))
-                .isActive(result.getBoolean("is_active"))
+        LOGGER.info("Building user from ResultSet");
+        User user = User.builder()
+                .id(result.getLong("u_id"))
+                .email(result.getString("u_email"))
+                .password(result.getString("u_password"))
+                .name(result.getString("u_name"))
+                .surname(result.getString("u_surname"))
+                .role(Role.valueOf(result.getString("u_role")))
+                .balance(result.getLong("u_balance"))
+                .isActive(result.getBoolean("u_is_active"))
                 .build();
+        LOGGER.info("Builded user: {}", user);
+        return user;
     }
 
-    public static Page<User> getUserPage(ResultSet result, Integer limit, Integer offset) throws SQLException {
-        List<User> users = new ArrayList<>();
-        while (result.next()){
+    public static Set<User> getUserSet(ResultSet result, Integer limit) throws SQLException {
+        Set<User> users = new HashSet<>();
+        result.beforeFirst();
+        while((result.next()) && (users.size() < limit)){
             users.add(extractFromResultSet(result));
         }
-        return  new Page<>(users, (offset/limit)+1);
+        LOGGER.info("Users set adding to page: {}", users);
+        return users;
+                //new Page<>(users, (offset/limit)+1);
+    }
+    public static void setFindByRolePrepearedStatement(Role role, Integer limit, Integer offset, PreparedStatement statement) throws SQLException {
+        statement.setString(1, role.name());
+        statement.setInt(2, limit);
+        statement.setInt(3, offset);
     }
 
     public static void setUserPreparedStatement(User user, PreparedStatement statement) throws SQLException {

@@ -63,6 +63,10 @@ public class User {
             User.this.isActive = isActive;
             return this;
         }
+        public UserBuilder periodicals(Set<Periodical> periodicals){
+            User.this.periodicals = periodicals;
+            return this;
+        }
     }
 
     public Long getId() {
@@ -97,6 +101,10 @@ public class User {
         return isActive;
     }
 
+    public Set<Periodical> getPeriodicals() {
+        return periodicals;
+    }
+
     public void setId(Long id){
         this.id = id;
     }
@@ -127,6 +135,10 @@ public class User {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public void setPeriodicals(Set<Periodical> periodicals) {
+        this.periodicals = periodicals;
     }
 
     @Override

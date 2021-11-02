@@ -1,12 +1,13 @@
 package periodicals.dto;
 
-import java.util.List;
+import java.util.Set;
+import java.util.Set;
 
 public class Page<T> {
-    List<T> items;
+    Set<T> items;
     Integer number;
 
-    public Page(List<T> items,  Integer number) {
+    public Page(Set<T> items,  Integer number) {
         this.items = items;
         this.number = number;
     }
@@ -14,7 +15,7 @@ public class Page<T> {
     public Boolean hasContent(){
         return !items.isEmpty();
     }
-    public List<T> getItems() {
+    public Set<T> getItems() {
         return items;
     }
 
@@ -22,11 +23,19 @@ public class Page<T> {
         return number;
     }
 
-    public void setItems(List<T> items) {
+    public void setItems(Set<T> items) {
         this.items = items;
     }
 
     public void setNumber(Integer number) {
         this.number = number;
+    }
+
+    @Override
+    public String toString() {
+        return "Page{" +
+                "items=" + items +
+                ", number=" + number +
+                '}';
     }
 }

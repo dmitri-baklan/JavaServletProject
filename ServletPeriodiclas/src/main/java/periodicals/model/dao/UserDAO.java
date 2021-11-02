@@ -10,11 +10,11 @@ import java.util.Optional;
 
 public interface UserDAO extends GenericDAO<User>{
 
-    Optional<User> findByEmail(String email) ;
+    Optional<User> findByEmail(String email)throws SQLException ;
 
-    Optional<User> findRedaerById(Long id);
+    Optional<User> findRedaerById(Long id)throws SQLException;
 
-    Page<User> findByRole(Role role, Pageable pageable);
+    Page<User> findByRole(Role role, Pageable pageable)throws SQLException;
 
     Page<User> findByEmail(String email,Pageable pageable)throws SQLException;
 

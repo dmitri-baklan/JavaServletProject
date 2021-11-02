@@ -1,13 +1,14 @@
-package periodicals.controller.command;
+package periodicals.controller.command.guest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import periodicals.controller.command.Command;
 import periodicals.controller.filter.AuthFilter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class RegistrationCommand implements Command{
+public class RegistrationCommand implements Command {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthFilter.class.getName());
 

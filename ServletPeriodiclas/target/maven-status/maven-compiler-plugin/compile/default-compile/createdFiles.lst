@@ -11,10 +11,11 @@ periodicals\dto\Page.class
 periodicals\model\dao\mapper\UserMapper.class
 periodicals\dto\UserDTO.class
 periodicals\util\property\DBProperty.class
+periodicals\model\entity\periodical\Periodical$PeriodicalBuilder.class
+periodicals\model\dao\mapper\PeriodicalMapper.class
 periodicals\model\dao\UserDAO.class
 periodicals\dto\UserDTO$UserDTOBuilder.class
 periodicals\model\dao\pageable\Pageable$PageableBuilder.class
-periodicals\model\dao\mapper\ObjectMapper.class
 periodicals\Servlet.class
 periodicals\model\dao\impl\JDBCUserDAO.class
 periodicals\model\entity\periodical\Periodical.class
@@ -26,6 +27,7 @@ periodicals\controller\filter\LocaleFilter.class
 periodicals\model\entity\user\authority\Role$3.class
 periodicals\model\dao\impl\JDBCFactoryDAO.class
 periodicals\controller\command\WelcomeCommand.class
+periodicals\model\entity\periodical\Subject.class
 periodicals\exception\RoleHasNoEndpointsException.class
 periodicals\model\dao\GenericDAO.class
 periodicals\model\entity\user\User$UserBuilder.class
