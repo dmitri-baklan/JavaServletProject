@@ -7,6 +7,7 @@ import periodicals.controller.command.CommandUtility;
 import periodicals.controller.filter.AuthFilter;
 import periodicals.controller.validator.Validator;
 import periodicals.exception.DataBaseException;
+import periodicals.model.entity.user.User;
 import periodicals.model.entity.user.authority.Role;
 import periodicals.model.service.UserService;
 import periodicals.util.AttributeKey;
@@ -47,16 +48,18 @@ public class LoginCommand implements Command {
         LOGGER.info("Email[{}] are not logged in yet", email);
         // TODO AttributeKey
         try {
-            Role role = userService.checkUserAuthority(email, password);
-            if(role.equals(Role.GUEST)){
-                CommandUtility.setUserRole(request, Role.GUEST, null);
-                request.setAttribute(AttributeKey.ERROR_BLANK,"form.signin.incorrect.data");
-                return "login.jsp";
-            }
-            CommandUtility.setUserRole(request, role, email);
+            User user = userService.getUserAuthority(email, password);
+//            if(user.getRole().equals(Role.GUEST)){
+//                CommandUtility.setUserRole(request, response, user);
+//                request.setAttribute(AttributeKey.ERROR_BLANK,"form.signin.incorrect.data");
+//                return "login.jsp";
+//            }
+            CommandUtility.setUserRole(request, response, user);
             CommandUtility.addUserFromContext(request, email);
-        }catch(DataBaseException ex) {
-            CommandUtility.setUserRole(request, Role.GUEST, null);
+        }catch(Exception ex) {
+            User user = new User();
+            user.setRole(Role.GUEST);
+            CommandUtility.setUserRole(request, response, user);
             LOGGER.error("[{}]:{}", ex.getClass().getSimpleName(), ex.getMessage());
             request.setAttribute(AttributeKey.ERROR_BLANK,"form.signin.incorrect.data");
             return "login.jsp";

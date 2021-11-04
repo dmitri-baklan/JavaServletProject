@@ -5,7 +5,9 @@ import org.slf4j.LoggerFactory;
 import periodicals.controller.command.Command;
 import periodicals.controller.command.CommandUtility;
 import periodicals.controller.validator.Validator;
+import periodicals.dto.UserDTO;
 import periodicals.exception.DataBaseException;
+import periodicals.model.entity.user.User;
 import periodicals.model.entity.user.authority.Role;
 import periodicals.model.service.UserService;
 import periodicals.util.AttributeKey;
@@ -25,40 +27,50 @@ public class EditUserCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        if(request.getMethod().equals("GET")){
-            return "login.jsp";
-        }
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
 
-        if(!Validator.checkIsNotBlank(email, password)){
-            LOGGER.error("Email[{}] and password[{}] are not valid", email, password);
-            request.setAttribute(AttributeKey.ERROR_BLANK, "form.signin.incorrect.data");
-            return "login.jsp";
+        UserDTO userDTO = UserDTO.builder()
+                .email(request.getParameter("email"))
+                .password(request.getParameter("password"))
+                .name(request.getParameter("name"))
+                .surname(request.getParameter("surname"))
+                .role(request.getParameter("role"))
+                .build();
+        if(request.getMethod().equals("GET")){
+//            String email = (String)request.getSession().getAttribute("email");
+            userDTO.setEmail((String)request.getSession().getAttribute("email"));
+            userDTO.setName((String)request.getSession().getAttribute("name"));
+            userDTO.setSurname((String)request.getSession().getAttribute("surname"));
+            request.setAttribute("userDTO", userDTO);
+            return "/user/editUser.jsp";
         }
-        LOGGER.info("Email[{}] and password[{}] are valid", email, password);
-        // TODO AttributeKey
-        if (CommandUtility.checkUserIsLogged(request, email)) {
-            LOGGER.error("User with email[{}] has already logged in", email);
-            request.setAttribute(AttributeKey.ERROR_BLANK,"valid.user.already.logged");
-            return "login.jsp";
+        //UserDTO userDTO = userService.getUserByEmail(request.getSession().getServletContext().)
+
+
+        if(!Validator.checkNameRegex(userDTO.getName(), userDTO.getSurname())){
+            LOGGER.error("Name[{}] and Surname[{}] are not valid", userDTO.getEmail(), userDTO.getPassword());
+            request.setAttribute(AttributeKey.ERROR_PATTERN_NAME, "valid.user.name.regex");
+            request.setAttribute("userDTO", userDTO);
+            return "/user/editUser.jsp";
         }
-        LOGGER.info("Email[{}] are not logged in yet", email);
-        // TODO AttributeKey
-        try {
-            Role role = userService.checkUserAuthority(email, password);
-            if(role.equals(Role.GUEST)){
-                CommandUtility.setUserRole(request, Role.GUEST, null);
-                request.setAttribute(AttributeKey.ERROR_BLANK,"form.signin.incorrect.data");
-                return "login.jsp";
-            }
-            CommandUtility.setUserRole(request, role, email);
-            CommandUtility.addUserFromContext(request, email);
-        }catch(DataBaseException ex) {
-            CommandUtility.setUserRole(request, Role.GUEST, null);
+        if(Validator.checkStringLength(6,20, userDTO.getPassword())){
+            LOGGER.error("Password[{}] are not valid", userDTO.getPassword());
+            request.setAttribute(AttributeKey.ERROR_PATTERN_PASSWORD, "valid.user.password.size");
+            request.setAttribute("userDTO", userDTO);
+            return "/user/editUser.jsp";
+        }
+        LOGGER.info("UserDTO are valid:{}", userDTO);
+        try{
+            User user = userService.updateUser(userDTO);
+            CommandUtility.setUserRole(request, response, user);
+        }catch (Exception ex){
             LOGGER.error("[{}]:{}", ex.getClass().getSimpleName(), ex.getMessage());
-            request.setAttribute(AttributeKey.ERROR_BLANK,"form.signin.incorrect.data");
-            return "login.jsp";
+            //TODO change setUserRole!
+            User user = new User();
+            user.setRole(Role.GUEST);
+            CommandUtility.setUserRole(request, response, user);
+            //request.setAttribute(AttributeKey.ERROR_EXIST, "valid.user.email.exists");
+            request.setAttribute("userDTO", userDTO);
+            return "/user/editUser.jsp";
         }
         return "redirect:/profile";
     }

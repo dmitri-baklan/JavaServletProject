@@ -2,12 +2,16 @@ package periodicals.controller.command;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import periodicals.model.entity.user.User;
 import periodicals.model.entity.user.authority.Role;
 import periodicals.util.AttributeKey;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 
@@ -17,14 +21,16 @@ public class CommandUtility {
 
     private CommandUtility() {}
 
-    public static String setUserRole(HttpServletRequest req, Role role, String email) {
+    public static String setUserRole(HttpServletRequest req, HttpServletResponse res, User user) {
         HttpSession session = req.getSession();
+//        res.addCookie(new Cookie("user_email", email));
+        session.setAttribute("email", user.getEmail());
+        session.setAttribute("role", user.getRole().name());
+        session.setAttribute("name", user.getName());
+        session.setAttribute("surname", user.getSurname());
 
-        session.setAttribute("email", email);
-        session.setAttribute("role", role.name());
-
-        LOGGER.info("Adding email[{}] and role[{}] to session ", email, role.name());
-        return email;
+        LOGGER.info("Adding email[{}] and role[{}] to session ", user.getEmail(), user.getRole().name());
+        return user.getEmail();
     }
 
     public static boolean checkUserIsLogged(HttpServletRequest req, String email) {
@@ -51,11 +57,16 @@ public class CommandUtility {
         req.getSession().getServletContext().setAttribute(AttributeKey.LOGGED_USERS, loggedUsers);
         LOGGER.info("[{}] was added to context", email);
     }
-
-    public static void deleteUserFromContext(HttpServletRequest req) {
+//TODO: cookieException?
+    public static void deleteUserFromContext(HttpServletRequest req, HttpServletResponse res) {
         ServletContext context = req.getServletContext();
         String email = (String) req.getSession().getAttribute("email");
-
+//        Cookie cookie = Arrays.stream(req.getCookies())
+//                .filter(a->a.getName().equals("user_email"))
+//                .findFirst()
+//                .orElse(null);
+//        cookie.setMaxAge(0);
+//        res.addCookie(cookie);
         @SuppressWarnings("unchecked")
         HashSet<String> loggedUsers = (HashSet<String>) context.getAttribute("loggedUsers");
         loggedUsers = Objects.isNull(loggedUsers)? new HashSet<String>() : loggedUsers;

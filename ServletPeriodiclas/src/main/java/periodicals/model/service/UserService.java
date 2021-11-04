@@ -37,12 +37,14 @@ public class UserService {
 //                orElseThrow(()-> new UsernameNotFoundException(String.format("email %s not found", email))));
 //    }
 
-    public Role checkUserAuthority(String email, String password){
+    public User getUserAuthority(String email, String password){
         // TODO: add DigestUtils.md5Hex
         try {
             User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-            return user.getPassword().equals(DigestUtils.md5Hex(password)) ? user.getRole() : Role.GUEST;
-
+            if(user.getPassword().equals(DigestUtils.md5Hex(password))){
+                return user;
+            }
+            return new User();
         }catch (SQLException ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
             throw new DataBaseException();
@@ -114,13 +116,18 @@ public class UserService {
 
     }
 
-    public void updateUser(UserDTO userDTO) throws UserNotFoundException {
+    public User updateUser(UserDTO userDTO) throws EmailAlreadyExistException {
         try{
-            User userToUpdate = userRepository.findByEmail(
-                    userDTO.getEmail()).orElseThrow(UserNotFoundException::new);
-            //TODO .upperCase?
+//            if(userRepository.findByEmail(userDTO.getEmail()).isPresent()){
+//                throw new EmailAlreadyExistException();
+//            }
+            User userToUpdate = userRepository.findByEmail(userDTO.getEmail())
+                    .orElseThrow(UserNotFoundException::new);
+            ;
+
+
             String encPassword = DigestUtils.md5Hex(userDTO.getPassword());
-            userRepository.save(User.builder()
+            User user = User.builder()
                     .id(userToUpdate.getId())
                     .name(userDTO.getName())
                     .surname(userDTO.getSurname())
@@ -131,7 +138,10 @@ public class UserService {
                     .isActive(userToUpdate.isActive())
                     .balance(userToUpdate.getBalance())
                     .subscriptions(userToUpdate.getSubscriptions())
-                    .build());
+                    .build();
+            LOGGER.info("User to saving is active: {}", user.isActive());
+            userRepository.save(user);
+            return user;
         }catch (SQLException ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
             throw new DataBaseException();

@@ -1,9 +1,11 @@
 D:\epam\gitSpringProject\JavaServletProject\ServletPeriodiclas\src\main\java\periodicals\controller\validator\Regex.java
+D:\epam\gitSpringProject\JavaServletProject\ServletPeriodiclas\src\main\java\periodicals\controller\command\user\EditUserCommand.java
 D:\epam\gitSpringProject\JavaServletProject\ServletPeriodiclas\src\main\java\periodicals\exception\DataBaseException.java
 D:\epam\gitSpringProject\JavaServletProject\ServletPeriodiclas\src\main\java\periodicals\util\DBProperty.java
 D:\epam\gitSpringProject\JavaServletProject\ServletPeriodiclas\src\main\java\periodicals\controller\validator\Validator.java
 D:\epam\gitSpringProject\JavaServletProject\ServletPeriodiclas\src\main\java\periodicals\controller\filter\AuthFilter.java
 D:\epam\gitSpringProject\JavaServletProject\ServletPeriodiclas\src\main\java\periodicals\controller\filter\LocaleFilter.java
+D:\epam\gitSpringProject\JavaServletProject\ServletPeriodiclas\src\main\java\periodicals\controller\command\user\ProfileReplenishmentCommand.java
 D:\epam\gitSpringProject\JavaServletProject\ServletPeriodiclas\src\main\java\periodicals\model\dao\impl\JDBCUserDAO.java
 D:\epam\gitSpringProject\JavaServletProject\ServletPeriodiclas\src\main\java\periodicals\model\entity\user\authority\Role.java
 D:\epam\gitSpringProject\JavaServletProject\ServletPeriodiclas\src\main\java\periodicals\controller\validator\UserValidator.java

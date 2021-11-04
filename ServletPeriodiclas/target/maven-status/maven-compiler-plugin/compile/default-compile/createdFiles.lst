@@ -4,6 +4,7 @@ periodicals\controller\validator\Regex.class
 periodicals\model\entity\user\authority\Role$2.class
 periodicals\util\AttributeKey.class
 periodicals\dto\Page.class
+periodicals\controller\command\user\ProfileReplenishmentCommand.class
 periodicals\dto\UserDTO.class
 periodicals\util\DBProperty.class
 periodicals\dto\ReplenishmentDTO.class
@@ -32,6 +33,7 @@ periodicals\model\connection\ConnectionDB.class
 periodicals\controller\Servlet.class
 periodicals\model\dao\mapper\UserMapper.class
 periodicals\controller\command\CommandUtility.class
+periodicals\controller\command\user\EditUserCommand.class
 periodicals\model\entity\periodical\Periodical$PeriodicalBuilder.class
 periodicals\model\dao\mapper\PeriodicalMapper.class
 periodicals\dto\UserDTO$UserDTOBuilder.class

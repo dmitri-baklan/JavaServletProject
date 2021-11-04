@@ -27,33 +27,19 @@
                         <input type="text" class="form-control"
                                placeholder="<fmt:message key="form.signup.name"/>" name="name"
                                value="<c:out value="${userDTO.name}"/>" autofocus>
-<%--                        value="*{name}"--%>
-<%--                        <c:if test="${errorBlankField != null}">--%>
-<%--                            <div class="alert alert-danger">--%>
-<%--                                <c:set value="${errorBlankField}" var="login_error"/>--%>
-<%--                                <fmt:message key="${login_error}"/>--%>
-<%--                            </div>--%>
-<%--                        </c:if>--%>
-                        <c:if test="${errorStringName != null}">
-                            <div class="alert-danger">
-                                <c:set var="error" value="${errorStringName}"/>
-                                <fmt:message key="${error}"/>
-                            </div>
-                        </c:if>
                     </div>
                     <div class="col">
                         <input type="text" class="form-control"
                                placeholder="<fmt:message key="form.signup.surname"/>" name="surname"
                                value="<c:out value="${userDTO.surname}"/>">
-                        <%--                        value="*{name}"--%>
-                        <c:if test="${errorStringName != null}">
-                            <div class="alert-danger">
-                                <c:set var="error" value="${errorStringName}"/>
-                                <fmt:message key="${error}"/>
-                            </div>
-                        </c:if>
                     </div>
                 </div>
+                <c:if test="${errorStringName != null}">
+                    <div class="alert-danger">
+                        <c:set var="error" value="${errorStringName}"/>
+                        <fmt:message key="${error}"/>
+                    </div>
+                </c:if>
                 <div id="nameHelp" class="form-text" ><fmt:message key="form.signup.name.help"/></div>
                 <div class="col">
                     <input type="text" class="form-control"
@@ -98,6 +84,7 @@
                     </div>
                 </div>
                 <br>
+                <br>
                 <div class="col">
                     <button type="submit" class="btn btn-primary" >
                         <fmt:message key="button.submit"/>
@@ -105,6 +92,9 @@
                 </div>
             </div>
         </form>
+        <a type="button" class="btn btn-danger" href="<c:url value="/login"/>">
+            <fmt:message key="button.cancel"/>
+        </a>
     </div>
 </div>
 </body>

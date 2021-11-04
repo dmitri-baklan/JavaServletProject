@@ -74,5 +74,8 @@ public class UserMapper{ //implements ObjectMapper<User>{
         }
         statement.setLong(7, user.getBalance());
         statement.setLong(8, user.getSubscriptions());
+        if(Objects.nonNull(user.getId())){
+            statement.setLong(9, user.getId());
+        }
     }
 }

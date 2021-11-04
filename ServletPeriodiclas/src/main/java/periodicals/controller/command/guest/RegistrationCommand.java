@@ -27,7 +27,7 @@ public class RegistrationCommand implements Command {
         this.userService = userService;
     }
 
-
+// TODO: fix if()
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         UserDTO userDTO = UserDTO.builder()
@@ -40,25 +40,25 @@ public class RegistrationCommand implements Command {
         if(request.getMethod().equals("GET")){
             return "registration.jsp";
         }
-        boolean a = Validator.checkNameRegex(userDTO.getName(), userDTO.getSurname());
-        LOGGER.error("Validation name / surname[{}] ", a);
-        if(!a){
-            LOGGER.error("Name[{}] and Surname[{}] are not valid", userDTO.getEmail(), userDTO.getPassword());
+        if(!Validator.checkNameRegex(userDTO.getName(), userDTO.getSurname())){
+            LOGGER.error("Name[{}] are not valid", userDTO.getName());
             request.setAttribute(AttributeKey.ERROR_PATTERN_NAME, "valid.user.name.regex");
             request.setAttribute("userDTO", userDTO);
             return "registration.jsp";
         }
-        a = Validator.checkEmailRegex(userDTO.getEmail());
-        LOGGER.error("Validation email [{}] ", a);
-        if(!a){
+        if(!Validator.checkNameRegex(userDTO.getSurname())){
+            LOGGER.error("Surname[{}] are not valid", userDTO.getSurname());
+            request.setAttribute(AttributeKey.ERROR_PATTERN_NAME, "valid.user.name.regex");
+            request.setAttribute("userDTO", userDTO);
+            return "registration.jsp";
+        }
+        if(!Validator.checkEmailRegex(userDTO.getEmail())){
             LOGGER.error("Email[{}] are not valid", userDTO.getEmail());
             request.setAttribute(AttributeKey.ERROR_PATTERN_EMAIL, "valid.user.email.regex");
             request.setAttribute("userDTO", userDTO);
             return "registration.jsp";
         }
-        a = Validator.checkStringLength(6,20, userDTO.getPassword());
-        LOGGER.error("Validation password [{}] ", a);
-        if(a){
+        if(Validator.checkStringLength(6,20, userDTO.getPassword())){
             LOGGER.error("Password[{}] are not valid", userDTO.getPassword());
             request.setAttribute(AttributeKey.ERROR_PATTERN_PASSWORD, "valid.user.password.size");
             request.setAttribute("userDTO", userDTO);
