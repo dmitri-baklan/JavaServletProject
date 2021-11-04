@@ -48,9 +48,12 @@ public class UserMapper{ //implements ObjectMapper<User>{
         Set<User> users = new HashSet<>();
         result.beforeFirst();
         while((result.next()) && (users.size() < limit)){
-            users.add(extractFromResultSet(result));
+            if(result.getLong("u_id") > 0)
+            {
+                users.add(extractFromResultSet(result));
+            }
         }
-        LOGGER.info("Users set adding to page: {}", users);
+        LOGGER.info("Users set: {}", users);
         return users;
                 //new Page<>(users, (offset/limit)+1);
     }

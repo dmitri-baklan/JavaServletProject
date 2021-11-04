@@ -1,8 +1,8 @@
 package periodicals.model.dao.pageable;
 
 public class Pageable {
-    Integer offset;
-    Integer limit;
+    int offset;
+    int limit;
     String sortField;
     boolean ascending;
 
@@ -13,19 +13,19 @@ public class Pageable {
         this.ascending = ascending;
     }
 
-    public Integer getOffset() {
+    public int getOffset() {
         return offset;
     }
 
-    public void setOffset(Integer offset) {
+    public void setOffset(int offset) {
         this.offset = offset;
     }
 
-    public Integer getLimit() {
+    public int getLimit() {
         return limit;
     }
 
-    public void setLimit(Integer limit) {
+    public void setLimit(int limit) {
         this.limit = limit;
     }
 

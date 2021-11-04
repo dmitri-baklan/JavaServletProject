@@ -139,7 +139,7 @@ public class UserService {
                     .balance(userToUpdate.getBalance())
                     .subscriptions(userToUpdate.getSubscriptions())
                     .build();
-            LOGGER.info("User to saving is active: {}", user.isActive());
+//            LOGGER.info("User to saving is active: {}", user.isActive());
             userRepository.save(user);
             return user;
         }catch (SQLException ex){

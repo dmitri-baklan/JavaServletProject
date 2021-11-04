@@ -6,6 +6,8 @@ import periodicals.controller.filter.AuthFilter;
 import periodicals.exception.DataBaseException;
 import periodicals.model.connection.ConnectionDB;
 import periodicals.model.dao.FactoryDAO;
+import periodicals.model.dao.PeriodicalDAO;
+import periodicals.model.dao.ReplenishmentDAO;
 import periodicals.model.dao.UserDAO;
 
 import javax.sql.DataSource;
@@ -38,5 +40,12 @@ public class JDBCFactoryDAO extends FactoryDAO {
     @Override
     public UserDAO createUserDAO() {
         return new JDBCUserDAO(getConnection());
+    }
+
+    public PeriodicalDAO createPeriodicalDAO(){
+        return new JDBCPeriodicalDAO(getConnection());
+    }
+    public ReplenishmentDAO createReplenishmentDAO(){
+        return new JDBCReplenishmentDAO(getConnection());
     }
 }
