@@ -1,6 +1,5 @@
 <%--<%@ taglib prefix="fmt" uri="http://java.sun.com/jsf/html" %>--%>
 <%@ include file="/fragments/taglibs.jsp"%>
-
 <%--<%@ include file="/fragments/taglibs.jsp"%>--%>
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
@@ -10,7 +9,7 @@
     <jsp:include page="fragments/head.jsp"/>
     <jsp:include page="fragments/header.jsp"/>
 
-
+<%--    <link rel="icon" href="#">--%>
 
     <title >
         <fmt:message key="title.welcome"/>
@@ -31,7 +30,7 @@
                     <fmt:message key="page.welcome.button.work"/> &raquo;
                 </a>
             </c:if>
-            <c:if test="${sessionScope.role == 'ADMINISTRATOR' && sessionScope.role == 'READER'}">
+            <c:if test="${sessionScope.role == 'ADMINISTRATOR' || sessionScope.role == 'READER'}">
                 <a class="btn btn-primary btn-lg" href='<c:url value="/periodicals"/>' >
                         <fmt:message key="page.welcome.button.work"/> &raquo;
                 </a>

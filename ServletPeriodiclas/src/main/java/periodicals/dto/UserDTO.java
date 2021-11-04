@@ -24,7 +24,7 @@ public class UserDTO {
 
     private String role;
 
-    static public UserDTOBuilder builder(){
+    public static UserDTOBuilder builder(){
         return new UserDTO().new UserDTOBuilder();
     }
 
@@ -34,27 +34,27 @@ public class UserDTO {
             return UserDTO.this;
         }
 
-        public UserDTOBuilder name(){
+        public UserDTOBuilder name(String name){
             UserDTO.this.name = name;
             return this;
         }
 
-        public UserDTOBuilder surname(){
+        public UserDTOBuilder surname(String surname){
             UserDTO.this.surname = surname;
             return this;
         }
 
-        public UserDTOBuilder email(){
+        public UserDTOBuilder email(String email){
             UserDTO.this.email = email;
             return this;
         }
 
-        public UserDTOBuilder password(){
+        public UserDTOBuilder password(String password){
             UserDTO.this.password = password;
             return this;
         }
 
-        public UserDTOBuilder role(){
+        public UserDTOBuilder role(String role){
             UserDTO.this.role = role;
             return this;
         }

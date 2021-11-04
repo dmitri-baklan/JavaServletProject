@@ -22,7 +22,8 @@ public enum Role {
     READER{
         @Override
         public List<String> getEndpoints() {
-            return Stream.of(AccessMatcher.FULLY_AUTHENTICATED.stream(),
+            return Stream.of(AccessMatcher.PERMIT_ALL.stream(),
+                            AccessMatcher.FULLY_AUTHENTICATED.stream(),
                             AccessMatcher.AUTHORITY_READER.stream())
                     .reduce(Stream::concat)
                     .orElseThrow(RoleHasNoEndpointsException::new)
@@ -32,7 +33,8 @@ public enum Role {
     ADMINISTRATOR{
         @Override
         public List<String> getEndpoints() {
-            return Stream.of(AccessMatcher.FULLY_AUTHENTICATED.stream(),
+            return Stream.of(AccessMatcher.PERMIT_ALL.stream(),
+                            AccessMatcher.FULLY_AUTHENTICATED.stream(),
                             AccessMatcher.AUTHORITY_ADMINISTRATOR.stream())
                     .reduce(Stream::concat)
                     .orElseThrow(RoleHasNoEndpointsException::new)

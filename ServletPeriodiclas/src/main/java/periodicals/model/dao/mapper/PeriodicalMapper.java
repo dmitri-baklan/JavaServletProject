@@ -27,13 +27,15 @@ public class PeriodicalMapper {
     }
 
     public static Set<Periodical> getPeriodicalSet(ResultSet result, Integer limit) throws SQLException {
-        Set<Periodical> users = new HashSet<>();
+        Set<Periodical> periodiclas = new HashSet<>();
         result.beforeFirst();
-        while((result.next()) && (users.size() < limit)){
-            users.add(extractFromResultSet(result));
+        while((result.next()) && (periodiclas.size() < limit)){
+            if(result.getLong("p_id") > 0){
+                periodiclas.add(extractFromResultSet(result));
+            }
         }
-        LOGGER.info("Users set adding to page: {}", users);
-        return users;
+        LOGGER.info("Users set adding to page: {}", periodiclas);
+        return periodiclas;
         //new Page<>(users, (offset/limit)+1);
     }
 }

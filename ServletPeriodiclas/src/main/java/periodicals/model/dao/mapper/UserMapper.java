@@ -11,6 +11,7 @@ import periodicals.model.entity.user.authority.Role;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -37,6 +38,7 @@ public class UserMapper{ //implements ObjectMapper<User>{
                 .role(Role.valueOf(result.getString("u_role")))
                 .balance(result.getLong("u_balance"))
                 .isActive(result.getBoolean("u_is_active"))
+                .subscriptions(result.getLong("u_subscriptions"))
                 .build();
         LOGGER.info("Builded user: {}", user);
         return user;
@@ -65,6 +67,12 @@ public class UserMapper{ //implements ObjectMapper<User>{
         statement.setString(4, user.getSurname());
         statement.setString(5, user.getRole().name());
         statement.setBoolean(6, user.isActive());
+        if(Objects.isNull(user.getBalance()) && Objects.isNull(user.getSubscriptions())){
+            statement.setNull(7, Types.BIGINT);
+            statement.setNull(8, Types.BIGINT);
+            return;
+        }
         statement.setLong(7, user.getBalance());
+        statement.setLong(8, user.getSubscriptions());
     }
 }

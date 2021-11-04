@@ -1,13 +1,12 @@
 <%@ include file="taglibs.jsp" %>
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Bootstrap CSS -->
 <%--<body>--%>
-<%--TODO: favicon.ico redirection--%>
-<%--<link rel="icon" href="#">--%>
+<%-- TODO: favicon.ico redirection--%>
+<link rel="icon" href="#">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
 <%--        <c:url value="/welcome">--%>
-        <a class="navbar-brand" href="/welcome">Periodicals</a>
+        <a class="navbar-brand" href="<c:url value="/welcome"/>">Periodicals</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown"
                 aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -25,39 +24,54 @@
                         <li><a class="dropdown-item" href="?lang=ua">
                             <fmt:message key="nav.language.ukrainian" />
                         </a></li>
+<%--                        TODO:TEST!--%>
+<%--                        <li>--%>
+<%--&lt;%&ndash;                            <a class="dropdown-item" href="#">&ndash;%&gt;--%>
+<%--                            <c:set scope="request" var="testc" value="${test}" />--%>
+
+<%--                            <fmt:message key="${testc}"/>--%>
+<%--&lt;%&ndash;                        </a>&ndash;%&gt;--%>
+<%--                        </li>--%>
+<%--                        <li>--%>
+<%--                            <c:out value="${testc}" />--%>
+<%--                        </li>--%>
+
                     </ul>
                 </li>
-                <c:if test="${sessionScope.role == 'ADMINISTRATOR' && sessionScope.role == 'READER'}">
+                <c:if test="${sessionScope.role == 'ADMINISTRATOR' || sessionScope.role == 'READER'}">
                     <li class="nav-item" >
-                        <a class="nav-link" href="/periodicals" >
+                        <a class="nav-link" href="<c:url value="/periodicals"/>" >
+
                             <fmt:message key="nav.link.periodicals" />
                         </a>
                     </li>
                 </c:if>
                 <c:if test="${sessionScope.role == 'ADMINISTRATOR'}">
                     <li class="nav-item" >
-                        <a class="nav-link" href="/profile/readers" >
+                        <a class="nav-link" href="<c:url value="/profile/readers"/>" >
                             <fmt:message key="nav.link.readers" />
                         </a>
                     </li>
                 </c:if>
                 <c:if test="${sessionScope.role == 'READER'}">
                     <li class="nav-item" >
-                        <a class="nav-link" href="/replenishments" >
+                        <a class="nav-link" href="<c:url value="replenishments"/>" >
                             <fmt:message key="nav.link.replenishments" />
                         </a>
                     </li>
                 </c:if>
             </ul>
         </div>
-        <c:if test="${sessionScope.role == 'ADMINISTRATOR' && sessionScope.role == 'READER'}">
+        <c:if test="${sessionScope.role == 'ADMINISTRATOR' || sessionScope.role == 'READER'}">
             <div class="form-inline my-2 my-lg-0" >
                 <div class="navbar-nav mr-auto">
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class=" mr-1">
-                                    <c:out value="${sessionScope.email}"></c:out></span>
+                                    <c:out value="${sessionScope.email}"/>
+<%--                                <fmt:message key="${sessionScope.email}"/>--%>
+                                </span>
                             <c:if test="${sessionScope.role == 'READER'}">
                                     <span class="badge bg-success">
                                         <fmt:message key="role.reader" /></span>
@@ -76,11 +90,11 @@
                                 </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="/profile" >
+                            <a class="dropdown-item" href="<c:url value="/profile"/>" >
                                 <fmt:message key="nav.link.profile" />
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/logout" >
+                            <a class="dropdown-item" href="<c:url value="/logout"/>" >
                                 <fmt:message key="nav.link.logout" />
                             </a>
                         </div>

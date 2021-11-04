@@ -18,7 +18,8 @@ public class AccessMatcher {
             "/profile",
             "/profile/edit",
             "/periodicals",
-            "/periodicals/d+"
+            "/periodicals/d+",
+            "/logout"
     );
 
     public static final List<String> AUTHORITY_READER = List.of(

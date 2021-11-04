@@ -1,4 +1,73 @@
 package periodicals.controller.command;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import periodicals.model.entity.user.authority.Role;
+import periodicals.util.AttributeKey;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.HashSet;
+import java.util.Objects;
+
 public class CommandUtility {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommandUtility.class.getName());
+
+    private CommandUtility() {}
+
+    public static String setUserRole(HttpServletRequest req, Role role, String email) {
+        HttpSession session = req.getSession();
+
+        session.setAttribute("email", email);
+        session.setAttribute("role", role.name());
+
+        LOGGER.info("Adding email[{}] and role[{}] to session ", email, role.name());
+        return email;
+    }
+
+    public static boolean checkUserIsLogged(HttpServletRequest req, String email) {
+        @SuppressWarnings("unchecked")
+        HashSet<String> loggedUsers = (HashSet<String>) req.getSession().getServletContext()
+                .getAttribute(AttributeKey.LOGGED_USERS);
+        loggedUsers = Objects.isNull(loggedUsers)? new HashSet<String>() : loggedUsers;
+
+        if (loggedUsers.stream().anyMatch(email::equals)) {
+            LOGGER.info("User with email [{}] exists in context", email);
+            return true;
+        }
+        LOGGER.info("User with email [{}] doesn`t exist in context", email);
+        return false;
+    }
+
+
+    public static void addUserFromContext(HttpServletRequest req, String email) {
+        @SuppressWarnings("unchecked")
+        HashSet<String> loggedUsers = (HashSet<String>) req.getSession().getServletContext()
+                .getAttribute(AttributeKey.LOGGED_USERS);
+        loggedUsers = Objects.isNull(loggedUsers)? new HashSet<String>() : loggedUsers;
+        loggedUsers.add(email);
+        req.getSession().getServletContext().setAttribute(AttributeKey.LOGGED_USERS, loggedUsers);
+        LOGGER.info("[{}] was added to context", email);
+    }
+
+    public static void deleteUserFromContext(HttpServletRequest req) {
+        ServletContext context = req.getServletContext();
+        String email = (String) req.getSession().getAttribute("email");
+
+        @SuppressWarnings("unchecked")
+        HashSet<String> loggedUsers = (HashSet<String>) context.getAttribute("loggedUsers");
+        loggedUsers = Objects.isNull(loggedUsers)? new HashSet<String>() : loggedUsers;
+        loggedUsers.remove(email);
+
+        context.setAttribute(AttributeKey.LOGGED_USERS, loggedUsers);
+        LOGGER.info("[{}] was removed from context", email);
+
+    }
+
+
+    public static String getLocale(HttpServletRequest req) {
+        return (String)req.getSession().getAttribute("locale");
+    }
 }

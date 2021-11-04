@@ -38,6 +38,7 @@ public class UserService {
 //    }
 
     public Role checkUserAuthority(String email, String password){
+        // TODO: add DigestUtils.md5Hex
         try {
             User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
             return user.getPassword().equals(DigestUtils.md5Hex(password)) ? user.getRole() : Role.GUEST;
@@ -63,7 +64,7 @@ public class UserService {
 
     }
 
-    public User getUserByEmailAuth(String email) throws UserNotFoundException{
+    public User getUserByEmail(String email) throws UserNotFoundException{
         try {
             return userRepository.findByEmail(email)
                     .orElseThrow(UserNotFoundException::new);
@@ -84,7 +85,7 @@ public class UserService {
         }
     }
 
-    public void signUpUser(UserDTO userDTO) throws UserNotFoundException {
+    public void signUpUser(UserDTO userDTO) throws EmailAlreadyExistException {
 
         try{
             if(userRepository.findByEmail(userDTO.getEmail()).isPresent()){
@@ -100,6 +101,7 @@ public class UserService {
                     .role(Role.valueOf(userDTO.getRole()))
                     .isActive(true)
                     .balance(Role.valueOf(userDTO.getRole()).equals(Role.READER) ? 0L:null)
+                    .subscriptions(Role.valueOf(userDTO.getRole()).equals(Role.READER) ? 0L:null)
                     .build();
 
             userRepository.save(user);
@@ -111,7 +113,6 @@ public class UserService {
 
 
     }
-
 
     public void updateUser(UserDTO userDTO) throws UserNotFoundException {
         try{
@@ -129,6 +130,7 @@ public class UserService {
                     .role(userToUpdate.getRole())
                     .isActive(userToUpdate.isActive())
                     .balance(userToUpdate.getBalance())
+                    .subscriptions(userToUpdate.getSubscriptions())
                     .build());
         }catch (SQLException ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());

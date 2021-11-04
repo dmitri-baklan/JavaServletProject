@@ -1,10 +1,9 @@
-package periodicals.controller.command.guest;
+package periodicals.controller.command.user;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import periodicals.controller.command.Command;
 import periodicals.controller.command.CommandUtility;
-import periodicals.controller.filter.AuthFilter;
 import periodicals.controller.validator.Validator;
 import periodicals.exception.DataBaseException;
 import periodicals.model.entity.user.authority.Role;
@@ -14,13 +13,13 @@ import periodicals.util.AttributeKey;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class LoginCommand implements Command {
-    private static final Logger LOGGER = LoggerFactory.getLogger(LoginCommand.class.getName());
+public class EditUserCommand implements Command {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EditUserCommand.class.getName());
     private final UserService userService;
-    public LoginCommand() {
+    public EditUserCommand() {
         this(new UserService());
     }
-    public LoginCommand(UserService userService) {
+    public EditUserCommand(UserService userService) {
         this.userService = userService;
     }
 
@@ -63,5 +62,4 @@ public class LoginCommand implements Command {
         }
         return "redirect:/profile";
     }
-
 }

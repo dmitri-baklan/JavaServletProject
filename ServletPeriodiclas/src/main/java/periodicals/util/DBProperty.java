@@ -1,4 +1,4 @@
-package periodicals.util.property;
+package periodicals.util;
 
 
 import periodicals.exception.DataBaseException;

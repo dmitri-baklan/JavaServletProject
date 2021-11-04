@@ -19,6 +19,7 @@ public class User {
     private Role role;
     private Long balance;
     private boolean isActive = true;
+    private Long subscriptions;
     Set<Periodical> periodicals;
 
     public static UserBuilder builder(){
@@ -59,6 +60,10 @@ public class User {
             User.this.balance = balance;
             return this;
         }
+        public UserBuilder subscriptions(Long subscriptions){
+            User.this.subscriptions = subscriptions;
+            return this;
+        }
         public UserBuilder isActive(boolean isActive){
             User.this.isActive = isActive;
             return this;
@@ -95,6 +100,10 @@ public class User {
 
     public Long getBalance() {
         return balance;
+    }
+
+    public Long getSubscriptions() {
+        return subscriptions;
     }
 
     public boolean isActive() {
@@ -141,6 +150,10 @@ public class User {
         this.periodicals = periodicals;
     }
 
+    public void setSubscriptions(Long subscriptions) {
+        this.subscriptions = subscriptions;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -152,6 +165,8 @@ public class User {
                 ", role=" + role +
                 ", balance=" + balance +
                 ", isActive=" + isActive +
+                ", subscriptions=" + subscriptions +
+                ", periodicals=" + periodicals +
                 '}';
     }
 }

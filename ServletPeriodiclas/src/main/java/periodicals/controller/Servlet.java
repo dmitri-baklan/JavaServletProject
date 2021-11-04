@@ -1,12 +1,15 @@
-package periodicals;
+package periodicals.controller;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import periodicals.controller.command.*;
 import periodicals.controller.command.guest.LoginCommand;
 import periodicals.controller.command.guest.RegistrationCommand;
 import periodicals.controller.command.guest.WelcomeCommand;
+import periodicals.controller.command.user.EditUserCommand;
 import periodicals.controller.command.user.LogoutCommand;
+import periodicals.controller.command.user.ProfileCommand;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -28,8 +31,10 @@ public class Servlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         commands.put("/welcome", new WelcomeCommand());
         commands.put("/login", new LoginCommand());
+        commands.put("/profile", new ProfileCommand());
         commands.put("/registration", new RegistrationCommand());
         commands.put("/logout", new LogoutCommand());
+        commands.put("/profile/edit", new EditUserCommand());
     }
 
     @Override
@@ -46,35 +51,11 @@ public class Servlet extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //TODO:TEST METHOD find user by email CALL!!
-//        JDBCFactoryDAO factoryDAO = new JDBCFactoryDAO();
-//        UserDAO userDAO = factoryDAO.createUserDAO();
-////        Integer offset;
-////                    Integer limit;
-////                    String orderBy;
-////                    String direction;
-//        Pageable pageable = Pageable.builder()
-//                .offset(0)
-//                .limit(4)
-//                        .orderBy("name")
-//                                .direction("ASCENDING").build();
-//        try{
-//            userDAO.findByRole(Role.READER,pageable);
-//        }
-//        catch(Exception ex){
-//
-//        }
-//
-
-        String path = request.getRequestURI();
+        String path = request.getRequestURI().replaceAll(".*/app", "");
         LOGGER.info("path:{}", path);
-        //path = path.replaceAll(".*/", "");
-
         Command command = commands.getOrDefault(path, commands.get("/welcome"));
-        LOGGER.info("command: " + command.toString());
-
+        LOGGER.info("command: " + command.getClass().toString());
         String page = command.execute(request,response);
-
         if(page.contains("redirect:")){
             LOGGER.info("RIDERECTION, page:{}", page);
             response.sendRedirect(page.replace("redirect:", "/app"));

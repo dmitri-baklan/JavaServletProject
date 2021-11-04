@@ -1,7 +1,7 @@
 package periodicals.model.connection;
 
 import org.apache.commons.dbcp.BasicDataSource;
-import periodicals.util.property.DBProperty;
+import periodicals.util.DBProperty;
 import javax.sql.DataSource;
 
 

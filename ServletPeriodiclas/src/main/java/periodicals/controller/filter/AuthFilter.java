@@ -27,7 +27,7 @@ public class AuthFilter implements Filter {
         HttpServletResponse httpRes = (HttpServletResponse) servletResponse;
         HttpSession session = httpReq.getSession();
 
-        String uri = httpReq.getRequestURI();
+        String uri = httpReq.getRequestURI().replaceAll(".*/app", "");
 
         String roleName = (String)session.getAttribute("role");
         if(Objects.isNull(roleName)) {
@@ -41,7 +41,7 @@ public class AuthFilter implements Filter {
             filterChain.doFilter(httpReq, httpRes);
         }else {
             LOGGER.error("{} hasn't access for endpoint:[{}]", role.name(), uri);
-            httpRes.sendRedirect("/welcome");
+            httpRes.sendRedirect("/app/welcome");
         }
     }
 
