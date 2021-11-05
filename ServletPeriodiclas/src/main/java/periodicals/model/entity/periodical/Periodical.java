@@ -3,6 +3,7 @@ package periodicals.model.entity.periodical;
 import periodicals.model.entity.user.User;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class Periodical {
@@ -16,8 +17,10 @@ public class Periodical {
     public static PeriodicalBuilder builder(){
         return new Periodical().new PeriodicalBuilder();
     }
+
     public class PeriodicalBuilder{
         public Periodical build(){
+            users = new LinkedHashSet<>();
             return Periodical.this;
         }
         public PeriodicalBuilder id(Long id){
@@ -89,4 +92,17 @@ public class Periodical {
     public void setUsers(Set<User> users) {
         this.users = users;
     }
+
+    @Override
+    public String toString() {
+        return "Periodical{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", subject=" + subject +
+                ", price=" + price +
+                ", subscribers=" + subscribers +
+                ", users=" + users +
+                '}';
+    }
+
 }

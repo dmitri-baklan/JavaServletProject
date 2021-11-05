@@ -3,6 +3,7 @@ package periodicals.model.entity.user;
 import periodicals.model.entity.periodical.Periodical;
 import periodicals.model.entity.user.authority.Role;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -29,6 +30,7 @@ public class User {
     public class UserBuilder{
 
         public User build(){
+            periodicals = new LinkedHashSet<>();
             return User.this;
         }
 

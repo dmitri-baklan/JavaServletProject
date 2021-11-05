@@ -3,14 +3,11 @@ package periodicals.model.dao.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import periodicals.dto.Page;
-import periodicals.exception.UserNotFoundException;
 import periodicals.model.dao.ReplenishmentDAO;
-import periodicals.model.dao.mapper.PeriodicalMapper;
 import periodicals.model.dao.mapper.ReplenishmentMapper;
 import periodicals.model.dao.mapper.UserMapper;
 import periodicals.model.dao.pageable.Pageable;
-import periodicals.model.entity.Replenishment;
-import periodicals.model.entity.periodical.Periodical;
+import periodicals.model.entity.replenishment.Replenishment;
 import periodicals.model.entity.user.User;
 import periodicals.util.DBProperty;
 
@@ -19,8 +16,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 
 public class JDBCReplenishmentDAO implements ReplenishmentDAO {
@@ -76,11 +71,13 @@ public class JDBCReplenishmentDAO implements ReplenishmentDAO {
                     //Optional<Replenishment> replenishment = Optional.of(ReplenishmentMapper.extractFromResultSet(res));
                     Set<Replenishment> replenishments = ReplenishmentMapper.getReplenishmentlSet(res, res.getRow());
                     replenishments.forEach(r->r.setUser(user));
-                    return new Page<>(replenishments,
-                            (pageable.getOffset()/pageable.getLimit())+1);
+                    // TODO fix total pages!
+                    return new Page<Replenishment>(replenishments,
+                            (pageable.getOffset()/pageable.getLimit())+1, 0D);
                 }
+                // TODO fix total pages!
                 LOGGER.info("ResultSet is empty");
-                return new Page<>(new HashSet<Replenishment>(), 0);
+                return new Page<Replenishment>(new HashSet<Replenishment>(), 0, 0D);
             }
         } catch(SQLException ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());

@@ -1,8 +1,7 @@
-package periodicals.model.entity;
+package periodicals.model.entity.replenishment;
 
 import periodicals.model.entity.user.User;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
 public class Replenishment {

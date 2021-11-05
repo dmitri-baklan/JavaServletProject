@@ -81,4 +81,18 @@ public class UserMapper{ //implements ObjectMapper<User>{
             statement.setLong(9, user.getId());
         }
     }
+
+    public static Set<User> getPeriodicalUserSet(ResultSet result, Integer limit, Long p_id) throws SQLException {
+        Set<User> users = new HashSet<>();
+        result.beforeFirst();
+        while((result.next()) && (users.size() < limit)){
+            if(result.getLong("u_id") > 0 && result.getLong("p_id") == p_id)
+            {
+                users.add(extractFromResultSet(result));
+            }
+        }
+        LOGGER.info("Users set: {}", users);
+        return users;
+        //new Page<>(users, (offset/limit)+1);
+    }
 }

@@ -2,7 +2,7 @@ package periodicals.model.dao;
 
 import periodicals.dto.Page;
 import periodicals.model.dao.pageable.Pageable;
-import periodicals.model.entity.Replenishment;
+import periodicals.model.entity.replenishment.Replenishment;
 
 import java.sql.SQLException;
 

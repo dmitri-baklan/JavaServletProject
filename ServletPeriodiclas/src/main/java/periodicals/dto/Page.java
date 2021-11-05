@@ -6,10 +6,12 @@ import java.util.Set;
 public class Page<T> {
     Set<T> items;
     Integer number;
+    Double totalPages;
 
-    public Page(Set<T> items,  Integer number) {
+    public Page(Set<T> items,  Integer number, Double totalPages) {
         this.items = items;
         this.number = number;
+        this.totalPages = totalPages;
     }
 
     public Boolean hasContent(){
@@ -31,11 +33,20 @@ public class Page<T> {
         this.number = number;
     }
 
+    public Double getTotalPages() {
+        return totalPages;
+    }
+
+    public void setTotalPages(Double totalPages) {
+        this.totalPages = totalPages;
+    }
+
     @Override
     public String toString() {
         return "Page{" +
                 "items=" + items +
                 ", number=" + number +
+                ", totalPages=" + totalPages +
                 '}';
     }
 }

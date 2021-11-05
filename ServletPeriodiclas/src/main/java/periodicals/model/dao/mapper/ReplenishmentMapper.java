@@ -3,9 +3,7 @@ package periodicals.model.dao.mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import periodicals.model.dao.impl.JDBCUserDAO;
-import periodicals.model.entity.Replenishment;
-import periodicals.model.entity.periodical.Periodical;
-import periodicals.model.entity.periodical.Subject;
+import periodicals.model.entity.replenishment.Replenishment;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

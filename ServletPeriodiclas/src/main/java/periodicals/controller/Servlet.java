@@ -7,6 +7,7 @@ import periodicals.controller.command.*;
 import periodicals.controller.command.guest.LoginCommand;
 import periodicals.controller.command.guest.RegistrationCommand;
 import periodicals.controller.command.guest.WelcomeCommand;
+import periodicals.controller.command.periodical.*;
 import periodicals.controller.command.user.EditUserCommand;
 import periodicals.controller.command.user.LogoutCommand;
 import periodicals.controller.command.user.ProfileCommand;
@@ -37,6 +38,12 @@ public class Servlet extends HttpServlet {
         commands.put("/logout", new LogoutCommand());
         commands.put("/profile/edit", new EditUserCommand());
         commands.put("/profile/replenishment", new ProfileReplenishmentCommand());
+        commands.put("/periodicals", new PeriodicalsCommand());
+        commands.put("/periodicals/\\d+", new PagePeriodicalCommand());
+        commands.put("/periodicals/d+/edit", new EditPeriodicalCommand());
+        commands.put("/periodicals/add", new AddPeriodidcalCommand());
+        commands.put("/periodicals/d+/delete", new DeletePeriodicalCommand());
+        commands.put("/periodicals/d+/subscription", new SubscriptionPeriodicalCommand());
     }
 
     @Override
@@ -53,17 +60,10 @@ public class Servlet extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        @SuppressWarnings("unchecked")
-        HashSet<String> loggedUsers = (HashSet<String>) request.getSession().getServletContext()
-                .getAttribute(AttributeKey.LOGGED_USERS);
-        loggedUsers = Objects.isNull(loggedUsers)? new HashSet<String>() : loggedUsers;
-        LOGGER.info("logged user:{}", loggedUsers);
-//        LOGGER.info("Request id:{}", request.getCookies());
-        LOGGER.info("Cookies:");
-        Arrays.stream(request.getCookies()).forEach(c->LOGGER.info("{}:[{}]", c.getName(), c.getValue()));
+
         String path = request.getRequestURI().replaceAll(".*/app", "");
         LOGGER.info("path:{}", path);
-        Command command = commands.getOrDefault(path, commands.get("/welcome"));
+        Command command = getCommandByURI(path);
         LOGGER.info("command: " + command.getClass().toString());
         String page = command.execute(request,response);
         if(page.contains("redirect:")){
@@ -73,5 +73,10 @@ public class Servlet extends HttpServlet {
             LOGGER.info("FORWARD, page:{}", page);
             request.getRequestDispatcher(page).forward(request, response);
         }
+    }
+
+    private  Command getCommandByURI(String uri) {
+        Optional <String> regex = commands.keySet().stream().filter(uri::matches).findFirst();
+        return commands.get(regex.isPresent() ? regex.get() : "\\/welcome\\/?");
     }
 }

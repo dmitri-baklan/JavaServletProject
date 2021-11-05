@@ -18,7 +18,7 @@ public class AccessMatcher {
             "/profile",
             "/profile/edit",
             "/periodicals",
-            "/periodicals/d+",
+            "/periodicals/\\d+",
             "/logout"
     );
 
@@ -28,28 +28,11 @@ public class AccessMatcher {
     );
 
     public static final List<String> AUTHORITY_ADMINISTRATOR = List.of(
-            "/periodicals/d+/edit",
+            "/periodicals/\\d+/edit",
             "periodicals/add",
             "/profile/readers",
-            "/profile/readers/d+"
+            "/profile/readers/\\d+",
+            "/profile/\\d+/delete"
     );
-//    .antMatchers("/registration","/login").anonymous()
-//                .antMatchers("/profile",
-//                                     "/profile/edit",
-//                                     "/periodicals",
-//                                     "/periodicals/{\\d}").fullyAuthenticated()
-//                .antMatchers("/profile/replenishment", "/replenishments").hasAuthority("READER")
-//                .antMatchers("/periodicals/{\\d}/edit",
-//                                     "periodicals/add",
-//                                     "/profile/readers",
-//                                     "/profile/readers/{\\d}").hasAuthority("ADMINISTRATOR")
-//                .and()
-//                .formLogin().permitAll()
-//                .loginPage("/login")
-//                .defaultSuccessUrl("/periodicals", true)
-//                .and()
-//                .logout().permitAll()
-//                .logoutSuccessUrl("/login");
-
 
 }

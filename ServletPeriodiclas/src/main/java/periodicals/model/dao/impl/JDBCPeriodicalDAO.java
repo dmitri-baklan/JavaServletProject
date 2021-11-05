@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 public class JDBCPeriodicalDAO implements PeriodicalDAO {
     private static final Logger LOGGER = LoggerFactory.getLogger(JDBCPeriodicalDAO.class.getName());
@@ -77,18 +78,27 @@ public class JDBCPeriodicalDAO implements PeriodicalDAO {
 
     @Override
     public Page<Periodical> findAll(Pageable pageable)throws SQLException {
-        try(PreparedStatement statement = connection.prepareStatement(statements.getProperty("periodical.find.all"),
+        try(PreparedStatement statement = connection.prepareStatement(
+                String.format(statements.getProperty("periodical.find.all"), pageable.getSortField(),pageable.isAscending()?"ASC":"DESC"),
                 ResultSet.TYPE_SCROLL_SENSITIVE,
                 ResultSet.CONCUR_UPDATABLE)){
             PeriodicalMapper.setFindAllPreperadStatement(statement,pageable);
             try(ResultSet res = statement.executeQuery()){
                 if(res.first()){
-                    return new Page(PeriodicalMapper.getPeriodicalSet(res, pageable.getLimit()),
-                            (pageable.getOffset()/pageable.getLimit())+1);
+                    String str = res.getString("p_name");
+                    LOGGER.info("First pertiodical is:{}", str);
+                    Long pages = res.getLong("pages");
+                    Set<Periodical> periodicals = PeriodicalMapper.getPeriodicalSet(res, pageable.getLimit());
+                    for(Periodical p : periodicals){
+                        p.setUsers(UserMapper.getPeriodicalUserSet(res, pageable.getLimit(), p.getId()));
+                    }
+                    return new Page<Periodical>(periodicals,
+                            (pageable.getOffset()/pageable.getLimit())+1,
+                            Math.ceil((double) pages / pageable.getLimit()));
                 }
                 LOGGER.info("ResultSet is empty");
-                return new Page(new HashSet<Periodical>(),
-                        (pageable.getOffset()/pageable.getLimit())+1);
+                return new Page<Periodical>(new HashSet<Periodical>(),
+                        (pageable.getOffset()/pageable.getLimit())+1, 0D);
             }
         } catch(SQLException ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
@@ -105,10 +115,11 @@ public class JDBCPeriodicalDAO implements PeriodicalDAO {
             try(ResultSet res = statement.executeQuery()){
                 LOGGER.info("RESULT SET: {}", res);
                 if(res.first()){
-                    return new Page<>(PeriodicalMapper.getPeriodicalSet(res, 2), 0);
+                    return new Page<Periodical>(PeriodicalMapper.getPeriodicalSet(res, 2),
+                            0, 0D);
                 }
                 LOGGER.info("ResultSet is empty");
-                return new Page<>(new HashSet<>(), 0);
+                return new Page<Periodical>(new HashSet<Periodical>(), 0, 0D);
             }
         } catch(SQLException ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
@@ -121,15 +132,20 @@ public class JDBCPeriodicalDAO implements PeriodicalDAO {
         try(PreparedStatement statement = connection.prepareStatement(statements.getProperty("periodical.filter.by.subject"),
                 ResultSet.TYPE_SCROLL_SENSITIVE,
                 ResultSet.CONCUR_UPDATABLE)){
-            PeriodicalMapper.setFindAllPreperadStatement(statement,pageable);
+            statement.setString(1, subj.name());
+            statement.setInt(2, pageable.getLimit());
+            statement.setInt(3, pageable.getOffset());
+//            PeriodicalMapper.setFindAllPreperadStatement(statement,pageable);
             try(ResultSet res = statement.executeQuery()){
                 if(res.first()){
-                    return new Page<>(PeriodicalMapper.getPeriodicalSet(res, pageable.getLimit()),
-                            (pageable.getOffset()/pageable.getLimit())+1);
+                    Long pages = res.getLong("pages");
+                    return new Page<Periodical>(PeriodicalMapper.getPeriodicalSet(res, pageable.getLimit()),
+                            (pageable.getOffset()/pageable.getLimit())+1,
+                            Math.ceil((double) pages / pageable.getLimit()));
                 }
                 LOGGER.info("ResultSet is empty");
-                return new Page<>(new HashSet<Periodical>(),
-                        (pageable.getOffset()/pageable.getLimit())+1);
+                return new Page<Periodical>(new HashSet<Periodical>(),
+                        (pageable.getOffset()/pageable.getLimit())+1, 0D);
             }
         } catch(SQLException ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
@@ -145,9 +161,10 @@ public class JDBCPeriodicalDAO implements PeriodicalDAO {
             statement.setLong(1, id);
             try(ResultSet res = statement.executeQuery()){
                 if(res.first()){
+                    LOGGER.info("Periodical was deleted successfully, p_id[{}]",res.getLong("p_id"));
                     return;
                 }
-                LOGGER.info("ResultSet is empty");
+                LOGGER.info("Periodical are not deleted");
                 return;
             }
         } catch(SQLException ex){
