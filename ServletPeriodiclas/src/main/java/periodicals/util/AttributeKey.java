@@ -1,6 +1,7 @@
 package periodicals.util;
 
 public interface AttributeKey {
+    public static final String ERROR_BALANCE = "errorNotEnoughBalance";
     public static final String ERROR_BLANK = "errorBlankField";
     public static final String ERROR_SIZE = "errorStringSize";
     public static final String ERROR_PATTERN = "errorStringPattern";

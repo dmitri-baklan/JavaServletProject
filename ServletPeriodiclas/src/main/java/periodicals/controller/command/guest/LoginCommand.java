@@ -7,6 +7,7 @@ import periodicals.controller.command.CommandUtility;
 import periodicals.controller.filter.AuthFilter;
 import periodicals.controller.validator.Validator;
 import periodicals.exception.DataBaseException;
+import periodicals.exception.UserIsNotActiveException;
 import periodicals.model.entity.user.User;
 import periodicals.model.entity.user.authority.Role;
 import periodicals.model.service.UserService;
@@ -54,6 +55,9 @@ public class LoginCommand implements Command {
 //                request.setAttribute(AttributeKey.ERROR_BLANK,"form.signin.incorrect.data");
 //                return "login.jsp";
 //            }
+            if(!user.isActive()){
+                throw new UserIsNotActiveException();
+            }
             CommandUtility.setUserRole(request, response, user);
             CommandUtility.addUserFromContext(request, email);
         }catch(Exception ex) {

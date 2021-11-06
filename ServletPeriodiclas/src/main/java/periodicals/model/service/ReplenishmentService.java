@@ -43,9 +43,9 @@ public class ReplenishmentService {
         this.userRepository = daoFactory.createUserDAO();
     }
 
-    public void replenishBalance(UserDTO userDetails, ReplenishmentDTO replenishmentDTO) throws RuntimeException {
+    public void replenishBalance(String email, ReplenishmentDTO replenishmentDTO) throws RuntimeException {
         try{
-            User user = userRepository.findByEmail(userDetails.getEmail())
+            User user = userRepository.findByEmail(email)
                     .orElseThrow(UserNotFoundException::new);
 
             user.setBalance(user.getBalance() + replenishmentDTO.getValue());

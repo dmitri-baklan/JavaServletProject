@@ -90,6 +90,9 @@
                 </div>
             </div>
         </form>
+        <a type="button" class="btn btn-danger" href="<c:url value="/periodicals"/>">
+            <fmt:message key="button.cancel"/>
+        </a>
     </div>
 </div>
 </body>

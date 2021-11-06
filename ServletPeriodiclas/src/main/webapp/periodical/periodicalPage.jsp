@@ -28,10 +28,10 @@
                 </svg>
             </div>
             <div class="col-6 col-sm-3">
-                <h1><span > <c:out value="${periodical.name}" />
+                <h1><span > <c:out value="${periodical.getName()}"/>
                 </span></h1>
                 <c:if   test="${sessionScope.role == 'ADMINISTRATOR'}">
-                    <a href="<c:url value="/periodicals/${periodical.id}/edit"/> "
+                    <a href="<c:url value="/periodicals/${periodical.getId()}/edit"/> "
                        >
                         <span class="fs-7"  ><fmt:message key="page.periodical.edit" /></span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">

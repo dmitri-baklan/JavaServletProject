@@ -6,7 +6,9 @@ import java.util.List;
 public class AccessMatcher {
 
     public static final List<String> PERMIT_ALL = List.of(
-        "/welcome"
+        "/welcome",
+        "/periodicals/\\d+",
+        "/periodicals"
     );
 
     public static final List<String> ANONYMOUS = List.of(
@@ -17,12 +19,11 @@ public class AccessMatcher {
     public static final List<String> FULLY_AUTHENTICATED = List.of(
             "/profile",
             "/profile/edit",
-            "/periodicals",
-            "/periodicals/\\d+",
             "/logout"
     );
 
     public static final List<String> AUTHORITY_READER = List.of(
+            "/periodicals/\\d+/subscription",
             "/profile/replenishment",
             "/replenishments"
     );

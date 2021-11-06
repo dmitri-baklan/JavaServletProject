@@ -1,4 +1,4 @@
-package periodicals;
+package periodicals.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +11,6 @@ import periodicals.controller.command.user.EditUserCommand;
 import periodicals.controller.command.user.LogoutCommand;
 import periodicals.controller.command.user.ProfileCommand;
 import periodicals.controller.command.user.ProfileReplenishmentCommand;
-import periodicals.model.service.PeriodicalService;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;

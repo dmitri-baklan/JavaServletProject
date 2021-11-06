@@ -24,12 +24,10 @@ public class PagePeriodicalCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-//        Long id = Validator.getIdFromRequset(request);
-//
-//        Periodical periodical = periodicalService.getPeriodicalById(id);
-//        request.setAttribute("periodical",periodical );
-//        request.setAttribute("users", periodical.getUsers());
-
+        Long id = Validator.getIdFromRequset(request);
+        Periodical periodical = periodicalService.getPeriodicalById(id);
+        request.setAttribute("periodical",periodical );
+        request.setAttribute("users", periodical.getUsers());
         return "/periodical/periodicalPage.jsp";
     }
 }

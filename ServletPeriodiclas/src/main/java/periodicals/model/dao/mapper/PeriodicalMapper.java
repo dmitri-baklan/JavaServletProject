@@ -46,6 +46,10 @@ public class PeriodicalMapper {
         statement.setInt(1, pageable.getLimit());
         statement.setInt(2, pageable.getOffset());
     }
+//    public static void setSubscriptionStatement(PreparedStatement statement,Long user_id, Long periodical_id)throws SQLException{
+//        statement.setInt(1, pageable.getLimit());
+//        statement.setInt(2, pageable.getOffset());
+//    }
 
     public static Set<Periodical> getPeriodicalSet(ResultSet result, Integer limit) throws SQLException {
         Set<Periodical> periodicals = new LinkedHashSet<>();

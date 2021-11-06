@@ -172,6 +172,38 @@ public class JDBCPeriodicalDAO implements PeriodicalDAO {
         }
     }
 
+    public void changeUserPeriodicalSubscription(User user, Periodical periodical)throws SQLException{
+        connection.setAutoCommit(false);
+        try (
+                PreparedStatement statementUsers = connection.prepareStatement(
+                        statements.getProperty("user.update.subscriptions"));
+             PreparedStatement statementPeriodicals = connection.prepareStatement(
+                     statements.getProperty("periodical.update.subscribers"));
+             PreparedStatement user_periodicals = connection.prepareStatement(
+                     statements.getProperty(user.getPeriodicals().stream().anyMatch(p->p.getId()==periodical.getId())
+                             ? "users_periodicals.insert":"users_periodicals.delete.u_id.and.p_id"));) {
+            statementUsers.setLong(1, user.getSubscriptions());
+            statementUsers.setLong(2, user.getBalance());
+            statementUsers.setLong(3, user.getId());
+            statementUsers.executeUpdate();
+
+            statementPeriodicals.setLong(1, periodical.getSubscribers());
+            statementPeriodicals.setLong(2, periodical.getId());
+            statementPeriodicals.executeUpdate();
+
+            user_periodicals.setLong(1, user.getId());
+            user_periodicals.setLong(2, periodical.getId());
+            user_periodicals.executeUpdate();
+        } catch (SQLException ex) {
+            LOGGER.error("[{}]: {}", ex.getClass().getSimpleName(), ex.getMessage());
+            connection.rollback();
+            connection.setAutoCommit(true);
+            throw ex;
+        }
+        connection.commit();
+        connection.setAutoCommit(true);
+    }
+
     @Override
     public void close() throws Exception {
         try {

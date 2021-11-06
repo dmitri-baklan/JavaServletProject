@@ -18,6 +18,7 @@ import periodicals.model.entity.periodical.Subject;
 import periodicals.model.entity.user.User;
 
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.Optional;
 
 public class PeriodicalService {
@@ -51,6 +52,7 @@ public class PeriodicalService {
 //        periodicalRepository = daoFactory.createPeriodicalDAO();
         Periodical periodical = Periodical
                 .builder()
+                .id(periodicalDTO.getId())
                 .name(periodicalDTO.getName())
                 .subject(periodicalDTO.getSubject())
                 .price(periodicalDTO.getPrice())
@@ -142,31 +144,32 @@ public class PeriodicalService {
      * @throws NotEnoughBalanceException
      */
     //TODO CHANGE SUBSCRIPTION!!!!
-    public void changeSubscription(Long id, UserDTO userDetails)
+    public void changeSubscription(Long id, String email)
             throws PeriodicalNotFoundException, UserNotFoundException, NotEnoughBalanceException{
 
         try{
 //            periodicalRepository = daoFactory.createPeriodicalDAO();
-            userRepository = daoFactory.createUserDAO();
+            //userRepository = daoFactory.createUserDAO();
 
             Periodical periodical = periodicalRepository.findById(id)
                     .orElseThrow(PeriodicalNotFoundException::new);
-
-            User user = userRepository.findByEmail(userDetails.getEmail())
+            User user = userRepository.findByEmail(email)
                     .orElseThrow(UserNotFoundException::new);
 
-            if(!user.getPeriodicals().remove(periodical)){
+            if(!user.getPeriodicals().removeIf(p-> p.getId() == periodical.getId())){
                 if (user.getBalance() - periodical.getPrice() >= 0) {
                     user.setBalance(user.getBalance() - periodical.getPrice());
-                    user.getPeriodicals().add(periodical);
                     periodical.setSubscribers(periodical.getSubscribers()+1);
-                    userRepository.save(user);
+                    user.setSubscriptions(user.getSubscriptions()+1);
+                    user.getPeriodicals().add(periodical);
+                    periodicalRepository.changeUserPeriodicalSubscription(user, periodical);
                     return;
                 }
                 throw new NotEnoughBalanceException();
             }
             periodical.setSubscribers((periodical.getSubscribers() == 0) ? 0 : (periodical.getSubscribers()-1));
-            userRepository.save(user);
+            user.setSubscriptions((user.getSubscriptions() == 0) ? 0 : (user.getSubscriptions()-1));
+            periodicalRepository.changeUserPeriodicalSubscription(user, periodical);
         }catch (SQLException ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
             throw new DataBaseException();

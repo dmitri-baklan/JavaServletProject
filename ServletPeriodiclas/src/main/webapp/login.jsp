@@ -42,7 +42,7 @@
             </form>
             <br>
 
-            <a href="<c:url value="/welcome"/>" class="btn btn-primary"><fmt:message key="form.signin.unauthorized"/></a>
+            <a href="<c:url value="/periodicals"/>" class="btn btn-primary"><fmt:message key="form.signin.unauthorized"/></a>
         </div>
     </div>
 </body>

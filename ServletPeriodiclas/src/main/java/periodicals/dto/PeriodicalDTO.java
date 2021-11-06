@@ -5,6 +5,7 @@ import periodicals.model.entity.periodical.Subject;
 import javax.validation.constraints.*;
 
 public class PeriodicalDTO {
+    private Long id;
     private String name;
     private Subject subject;
     private Long price;
@@ -17,6 +18,10 @@ public class PeriodicalDTO {
     public class PeriodicalDTOBuilder{
         public PeriodicalDTO build(){
             return PeriodicalDTO.this;
+        }
+        public PeriodicalDTOBuilder id(Long id){
+            PeriodicalDTO.this.id = id;
+            return this;
         }
         public PeriodicalDTOBuilder name(String name){
             PeriodicalDTO.this.name = name;
@@ -66,6 +71,14 @@ public class PeriodicalDTO {
 
     public void setSubscribers(Long subscribers) {
         this.subscribers = subscribers;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override

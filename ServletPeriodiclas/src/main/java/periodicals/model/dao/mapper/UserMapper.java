@@ -28,7 +28,6 @@ public class UserMapper{ //implements ObjectMapper<User>{
 //    private boolean isActive = true;
 
     public static User extractFromResultSet(ResultSet result) throws SQLException {
-        LOGGER.info("Building user from ResultSet");
         User user = User.builder()
                 .id(result.getLong("u_id"))
                 .email(result.getString("u_email"))
@@ -40,7 +39,6 @@ public class UserMapper{ //implements ObjectMapper<User>{
                 .isActive(result.getBoolean("u_is_active"))
                 .subscriptions(result.getLong("u_subscriptions"))
                 .build();
-        LOGGER.info("Builded user: {}", user);
         return user;
     }
 
@@ -53,7 +51,6 @@ public class UserMapper{ //implements ObjectMapper<User>{
                 users.add(extractFromResultSet(result));
             }
         }
-        LOGGER.info("Users set: {}", users);
         return users;
                 //new Page<>(users, (offset/limit)+1);
     }
@@ -91,8 +88,6 @@ public class UserMapper{ //implements ObjectMapper<User>{
                 users.add(extractFromResultSet(result));
             }
         }
-        LOGGER.info("Users set: {}", users);
         return users;
-        //new Page<>(users, (offset/limit)+1);
     }
 }

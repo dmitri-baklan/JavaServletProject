@@ -23,38 +23,39 @@
 <%--                <fmt:message key="${login_error}"/>--%>
 <%--            </div>--%>
 <%--        </c:if>--%>
-        <c:if test="${NotEnoughBalanceError != null}">
+        <c:if test="${errorNotEnoughBalance != null}">
             <div class="text-center d-flex justify-content-center mt-5">
                 <div class="alert alert-danger w-50" role="alert">
                     <div>
-                        <c:set value="${NotEnoughBalanceError}" var="subscription_error"/>
+                        <c:set value="${errorNotEnoughBalance}" var="subscription_error"/>
                         <strong><fmt:message key="${subscription_error}"/></strong>
                     </div>
                 </div>
             </div>
         </c:if>
-        <form action="<c:url value="/periodicals"/> ">
-            <div class="d-flex shadow p-3 mb-5 mt-5 bg-light rounded">
-                <div class="flex-grow-1">
-                    <div class=" input-group">
-                        <input type="text" class="form-control" placeholder="<fmt:message key="input.periodical.name"/>"
-                               aria-describedby="basic-addon1" name='searchQuery'
-                               value="<c:out value="${request_params.get('searchQuery')}"/>">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="submit" ><fmt:message key="button.find"/></button>
+        <c:if test="${periodicals.hasContent()}">
+
+            <form action="<c:url value="/periodicals"/> ">
+                <div class="d-flex shadow p-3 mb-5 mt-5 bg-light rounded">
+                    <div class="flex-grow-1">
+                        <div class=" input-group">
+                            <input type="text" class="form-control" placeholder="<fmt:message key="input.periodical.name"/>"
+                                   aria-describedby="basic-addon1" name='searchQuery'
+                                   value="<c:out value="${request_params.get('searchQuery')}"/>">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit" ><fmt:message key="button.find"/></button>
+                            </div>
                         </div>
                     </div>
+                    <c:if test="${sessionScope.role == 'ADMINISTRATOR'}">
+                        <div class="d-grid gap-2 d-md-block" >
+                            <a class="btn btn-primary" type="button"
+                               style="margin-left: 25px"
+                               href="<c:url value="/periodicals/add"/>"><fmt:message key="button.add"/></a>
+                        </div>
+                    </c:if>
                 </div>
-                <c:if test="${sessionScope.role == 'ADMINISTRATOR'}">
-                    <div class="d-grid gap-2 d-md-block" >
-                        <a class="btn btn-primary" type="button"
-                           style="margin-left: 25px"
-                           href="<c:url value="/periodicals/add"/>"><fmt:message key="button.add"/></a>
-                    </div>
-                </c:if>
-            </div>
-        </form>
-        <c:if test="${periodicals.hasContent()}">
+            </form>
             <div class="d-flex justify-content-center shadow p-3 bg-light rounded">
                 <div>
                     <table class="table table-striped table-hover">

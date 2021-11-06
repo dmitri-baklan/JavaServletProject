@@ -39,14 +39,14 @@
 
                     </ul>
                 </li>
-                <c:if test="${sessionScope.role == 'ADMINISTRATOR' || sessionScope.role == 'READER'}">
+<%--                <c:if test="${sessionScope.role == 'ADMINISTRATOR' || sessionScope.role == 'READER'}">--%>
                     <li class="nav-item" >
                         <a class="nav-link" href="<c:url value="/periodicals"/>" >
 
                             <fmt:message key="nav.link.periodicals" />
                         </a>
                     </li>
-                </c:if>
+<%--                </c:if>--%>
                 <c:if test="${sessionScope.role == 'ADMINISTRATOR'}">
                     <li class="nav-item" >
                         <a class="nav-link" href="<c:url value="/profile/readers"/>" >
