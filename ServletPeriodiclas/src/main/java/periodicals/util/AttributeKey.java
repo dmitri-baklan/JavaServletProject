@@ -7,6 +7,7 @@ public interface AttributeKey {
     public static final String ERROR_PATTERN_NAME = "errorStringName";
     public static final String ERROR_PATTERN_EMAIL = "errorStringEmail";
     public static final String ERROR_PATTERN_PASSWORD = "errorStringPassword";
+    public static final String ERROR_NUMBERS = "errorStringNumbers";
     public static final String ERROR_NULL = "erroNullField";
     public static final String ERROR_RANGE = "errorValueRange";
     public static final String ERROR_EXIST = "errorAlreadyExist";

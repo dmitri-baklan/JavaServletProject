@@ -45,7 +45,7 @@ public class UserMapper{ //implements ObjectMapper<User>{
     }
 
     public static Set<User> getUserSet(ResultSet result, Integer limit) throws SQLException {
-        Set<User> users = new HashSet<>();
+        Set<User> users = new LinkedHashSet<>();
         result.beforeFirst();
         while((result.next()) && (users.size() < limit)){
             if(result.getLong("u_id") > 0)

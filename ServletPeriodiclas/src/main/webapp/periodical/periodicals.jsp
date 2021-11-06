@@ -1,7 +1,4 @@
 <%@ include file="/fragments/taglibs.jsp"%>
-<%@page pageEncoding="UTF-8"%>
-<%--[<%@ page import="java.net.URLEncoder"%>--%>
-<%--<%response.sendRedirect("targetPage.jsp?MyParam="+URLEncoder.encode("Русский текст","cp1251"));%>]--%>
 <!DOCTYPE html >
 <html lang="en">
 
@@ -51,7 +48,7 @@
                 <c:if test="${sessionScope.role == 'ADMINISTRATOR'}">
                     <div class="d-grid gap-2 d-md-block" >
                         <a class="btn btn-primary" type="button"
-                           style="'margin-left: 25px'"
+                           style="margin-left: 25px"
                            href="<c:url value="/periodicals/add"/>"><fmt:message key="button.add"/></a>
                     </div>
                 </c:if>
@@ -75,6 +72,7 @@
                                     <c:set var="urlSort" value="${url}true" />
                                 </c:when>
                             </c:choose>
+
                             <c:if test="${sessionScope.role == 'READER'}">
                                 <th style="width: 75px"></th>
                             </c:if>
@@ -91,7 +89,7 @@
                                             <li class="nav-item dropdown">
                                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
                                                    role="button" data-bs-toggle="dropdown" aria-expanded="false"
-                                                   style="'padding: 0'"
+                                                   style="padding: 0"
                                                    ><fmt:message key="table.periodicals.subject"/>
                                                 </a>
                                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -179,14 +177,17 @@
                         <ul class="pagination flex-wrap">
 <%--                            <c:if test="${periodicals.number!=1}"><c:set var="cl" value="page-item"/></c:if>--%>
 <%--                            <c:if test="${periodicals.number==1}"><c:set var="cl" value="page-item disabled"/></c:if>--%>
-                            <c:choose>
-                                <c:when test="${ request_params.get('asc') == null || request_params.get('asc') == fasle}">
-                                    <c:set var="urlPagin" value="${url}true" />
-                                </c:when>
-                                <c:when test="${request_params.direction == 'true'}">
-                                    <c:set var="urlPagin" value="${url}false" />
-                                </c:when>
-                            </c:choose>
+<%--                            <c:choose>--%>
+<%--                                <c:when test="${ request_params.get('asc') == null || request_params.get('asc') == 'false'}">--%>
+<%--                                    <c:set var="urlPagin" value="${url}true" />--%>
+<%--                                </c:when>--%>
+<%--                                <c:when test="${request_params.direction == 'true'}">--%>
+<%--                                    <c:set var="urlPagin" value="${url}false" />--%>
+<%--                                </c:when>--%>
+<%--                            </c:choose>--%>
+                            <c:if test="${request_params.get('asc') != null}">
+                                <c:set var="urlPagin" value="${url}${request_params.get('asc')}" />
+                            </c:if>
                             <c:if test="${request_params.get('sortField') != null && request_params.get('sortField') != ''}">
                                 <c:set var="urlPagin" value="${urlPagin}&sortField=${request_params.get('sortField')}" />
                             </c:if>
@@ -208,7 +209,7 @@
                                        var="i" varStatus="<string>">
                                 <li
                                     class="${periodicals.getNumber() != i ? 'page-item' : 'page-item active'}">
-                                    <a href="<c:url value="${url}${urlPagin}">
+                                    <a href="<c:url value="${urlPagin}">
 											<c:param name="page" value="${i}"/>
 										</c:url>" class="page-link"><c:out value = "${i}"/></a>
                                 </li>

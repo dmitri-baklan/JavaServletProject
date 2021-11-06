@@ -14,7 +14,8 @@
         <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
+<%--                    href="#" --%>
+                    <a class="nav-link dropdown-toggle"  id="navbarDarkDropdownMenuLink"
                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <fmt:message key="nav.link.lang" />
                     </a>

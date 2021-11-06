@@ -10,8 +10,8 @@
     <title >
         <fmt:message key="title.periodicals"/>
     </title>
-    <fmt:setLocale value="${sessionScope.locale}"/>
-    <fmt:setBundle basename="messages"/>
+<%--    <fmt:setLocale value="${sessionScope.locale}"/>--%>
+<%--    <fmt:setBundle basename="messages"/>--%>
 </head>
 
 <body>
@@ -88,7 +88,7 @@
                 <div class="col-6 col-sm-4" >
                     <form method="POST" action="<c:url value="/periodicals/${periodical.id}/delete"/> " >
                         <button type="submit" class="btn btn-outline-danger"
-                                value="Delete">Delete periodical</button>
+                                value="Delete"><fmt:message key="button.delete"/> </button>
                     </form>
                 </div>
             </c:if>
@@ -98,4 +98,8 @@
 </div>
 
 </body>
+<footer>
+    <jsp:include page="../fragments/scripts.jsp" />
+    <jsp:include page="../fragments/footer.jsp" />
+</footer>
 </html>

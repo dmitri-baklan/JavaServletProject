@@ -19,23 +19,29 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public class ReplenishmentsService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReplenishmentsService.class.getName());
+public class ReplenishmentService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReplenishmentService.class.getName());
 
     private ReplenishmentDAO replenishmentRepository;
     private UserDAO userRepository;
 
-    public ReplenishmentsService() {
+    private static ReplenishmentService instance;
+
+    public static ReplenishmentService getInstance(){
+        if(instance == null){
+            instance = new ReplenishmentService();
+        }
+        return instance;
+    }
+
+    private ReplenishmentService() {
         this(FactoryDAO.getInstance());
     }
 
-    public ReplenishmentsService(FactoryDAO daoFactory) {
+    private ReplenishmentService(FactoryDAO daoFactory) {
         this.replenishmentRepository = daoFactory.createReplenishmentDAO();
         this.userRepository = daoFactory.createUserDAO();
     }
-
-
-
 
     public void replenishBalance(UserDTO userDetails, ReplenishmentDTO replenishmentDTO) throws RuntimeException {
         try{

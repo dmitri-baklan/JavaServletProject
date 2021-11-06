@@ -15,6 +15,7 @@ import periodicals.model.entity.user.User;
 import periodicals.model.entity.user.authority.Role;
 
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.Optional;
 
 public class UserService {
@@ -23,11 +24,20 @@ public class UserService {
 
     private UserDAO userRepository;
 
-    public UserService() {
+    private static UserService instance;
+
+    public static UserService getInstance(){
+        if(instance == null){
+            instance = new UserService();
+        }
+        return instance;
+    }
+
+    private UserService() {
         this(FactoryDAO.getInstance());
     }
 
-    public UserService(FactoryDAO daoFactory) {
+    private UserService(FactoryDAO daoFactory) {
         this.userRepository = daoFactory.createUserDAO();
     }
 

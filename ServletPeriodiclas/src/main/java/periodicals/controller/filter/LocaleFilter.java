@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class LocaleFilter implements Filter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AuthFilter.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(LocaleFilter.class.getName());
     public static final String LANG = "lang";
     public static final String LOCALE = "locale";
     public static final String EN = "en";
@@ -23,6 +23,7 @@ public class LocaleFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+        LOGGER.info("LocaleFilter");
         HttpServletRequest req = (HttpServletRequest) request;
         String langValue = request.getParameter(LANG);
 

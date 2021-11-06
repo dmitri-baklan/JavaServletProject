@@ -82,14 +82,13 @@ public class JDBCUserDAO implements UserDAO {
                    statement);
            try(ResultSet res = statement.executeQuery()){
                 if(res.first()){
-                    Long pages = res.getLong("pages");
-                    return new Page(UserMapper.getUserSet(res, pageable.getLimit()),
+                    long pages = res.getLong("pages");
+                    return new Page<User>(UserMapper.getUserSet(res, pageable.getLimit()),
                             (pageable.getOffset()/pageable.getLimit())+1,
                             Math.ceil((double) pages / pageable.getLimit()));
                 }
                 LOGGER.info("ResultSet is empty");
-               return new Page(new HashSet<User>(),
-                       (pageable.getOffset()/pageable.getLimit())+1, 0D);
+               return new Page<User>();
            }
         } catch(SQLException ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
@@ -108,12 +107,11 @@ public class JDBCUserDAO implements UserDAO {
                 if(res.first()){
 //                    Long totalPages = res.getLong("pages");
                     //TODO fix totalPages
-                    return new Page(UserMapper.getUserSet(res, pageable.getLimit()),
+                    return new Page<User>(UserMapper.getUserSet(res, pageable.getLimit()),
                             (pageable.getOffset()/pageable.getLimit())+1, 0D);
                 }
                 LOGGER.info("ResultSet is empty");
-                return new Page(new HashSet<User>(),
-                        (pageable.getOffset()/pageable.getLimit())+1, 0D);
+                return new Page<User>();
             }
         } catch(SQLException ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());

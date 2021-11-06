@@ -1,5 +1,6 @@
 package periodicals.dto;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.Set;
 
@@ -7,6 +8,9 @@ public class Page<T> {
     Set<T> items;
     Integer number;
     Double totalPages;
+    public Page() {
+        this.items = new LinkedHashSet<>();
+    }
 
     public Page(Set<T> items,  Integer number, Double totalPages) {
         this.items = items;

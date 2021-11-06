@@ -29,7 +29,7 @@ public class AccessMatcher {
 
     public static final List<String> AUTHORITY_ADMINISTRATOR = List.of(
             "/periodicals/\\d+/edit",
-            "periodicals/add",
+            "/periodicals/add",
             "/profile/readers",
             "/profile/readers/\\d+",
             "/profile/\\d+/delete"

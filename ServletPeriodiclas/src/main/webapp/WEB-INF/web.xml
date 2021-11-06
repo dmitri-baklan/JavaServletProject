@@ -6,7 +6,7 @@
   <display-name>Archetype Created Web Application</display-name>
   <servlet>
     <servlet-name>Servlet</servlet-name>
-    <servlet-class>periodicals.controller.Servlet</servlet-class>
+    <servlet-class>periodicals.Servlet</servlet-class>
   </servlet>
 
   <servlet-mapping>

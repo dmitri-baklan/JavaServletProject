@@ -17,7 +17,7 @@ public class ProfileCommand implements Command {
     private final UserService userService;
 
     public ProfileCommand() {
-        this(new UserService());
+        this(UserService.getInstance());
     }
 
     private ProfileCommand(UserService userService) {

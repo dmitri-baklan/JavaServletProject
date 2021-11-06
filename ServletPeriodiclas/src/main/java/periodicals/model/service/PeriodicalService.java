@@ -23,20 +23,32 @@ import java.util.Optional;
 public class PeriodicalService {
     private static final Logger LOGGER = LoggerFactory.getLogger(PeriodicalService.class.getName());
 
+    private static PeriodicalService instance;
+
+    public static PeriodicalService getInstance(){
+        if(instance == null){
+            instance = new PeriodicalService();
+        }
+        return instance;
+    }
+
+    FactoryDAO daoFactory;
     private PeriodicalDAO periodicalRepository;
     private UserDAO userRepository;
 
-    public PeriodicalService() {
-        this(FactoryDAO.getInstance());
+    private PeriodicalService() {
+        this.daoFactory = FactoryDAO.getInstance();
+        periodicalRepository = daoFactory.createPeriodicalDAO();
+        userRepository =daoFactory.createUserDAO();
     }
 
-    public PeriodicalService(FactoryDAO daoFactory) {
-        this.periodicalRepository = daoFactory.createPeriodicalDAO();
-        this.userRepository = daoFactory.createUserDAO();
-    }
+//    public PeriodicalService(FactoryDAO daoFactory) {
+//        this.periodicalRepository = daoFactory.createPeriodicalDAO();
+//        this.userRepository = daoFactory.createUserDAO();
+//    }
 
     public void savePeriodical(PeriodicalDTO periodicalDTO){
-
+//        periodicalRepository = daoFactory.createPeriodicalDAO();
         Periodical periodical = Periodical
                 .builder()
                 .name(periodicalDTO.getName())
@@ -54,6 +66,7 @@ public class PeriodicalService {
 
     public Periodical getPeriodicalById(Long id)throws PeriodicalNotFoundException {
         try {
+//            periodicalRepository = daoFactory.createPeriodicalDAO();
             return periodicalRepository.findById(id).orElseThrow(PeriodicalNotFoundException::new);
         }catch (SQLException ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
@@ -68,6 +81,7 @@ public class PeriodicalService {
 
         Pageable pageable = new Pageable(sortField, asc, page, size);
         try{
+//            periodicalRepository = daoFactory.createPeriodicalDAO();
             if(subject.isBlank()){
                 return searchQuery.isBlank() ? periodicalRepository.findAll(pageable)
                         : periodicalRepository.findByName(searchQuery);
@@ -85,6 +99,7 @@ public class PeriodicalService {
 
     public void updatePeriodical(PeriodicalDTO periodicalDTO, Long id){
         try{
+//            periodicalRepository = daoFactory.createPeriodicalDAO();
             periodicalRepository.save(
                     Periodical.builder()
                             .id(id)
@@ -102,6 +117,7 @@ public class PeriodicalService {
 
     public void deletePeriodical(Long id){
         try{
+//            periodicalRepository = daoFactory.createPeriodicalDAO();
             periodicalRepository.deleteById(id);
         }catch (SQLException ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
@@ -130,6 +146,9 @@ public class PeriodicalService {
             throws PeriodicalNotFoundException, UserNotFoundException, NotEnoughBalanceException{
 
         try{
+//            periodicalRepository = daoFactory.createPeriodicalDAO();
+            userRepository = daoFactory.createUserDAO();
+
             Periodical periodical = periodicalRepository.findById(id)
                     .orElseThrow(PeriodicalNotFoundException::new);
 

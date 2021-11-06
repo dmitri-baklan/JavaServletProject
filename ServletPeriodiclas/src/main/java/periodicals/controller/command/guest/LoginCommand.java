@@ -19,7 +19,7 @@ public class LoginCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginCommand.class.getName());
     private final UserService userService;
     public LoginCommand() {
-        this(new UserService());
+        this(UserService.getInstance());
     }
     public LoginCommand(UserService userService) {
         this.userService = userService;

@@ -26,6 +26,10 @@ public class Validator {
         return Arrays.stream(fields).anyMatch(a -> a.length() < min || a.length() > max);
     }
 
+    public static boolean checkNumberRegexAndRange(String number){
+       return number.matches(Regex.REGEX_NUMBERS)? checkNumberValue(1, 1000, number) : false;
+    }
+
     public static boolean checkNumberValue(int min, int max, String field) {
         Long value = Long.parseLong(field);
         return value>=min && value<=max;
@@ -45,8 +49,12 @@ public class Validator {
             return Integer.parseInt(defaultVal);
         }
     }
+    public static String getSortFilterParam(HttpServletRequest request, String key, String defaultVal) {
+        String field = request.getParameter(key);
+        return (field != null && List.of("p_name","p_price","p_subscribers").contains(field)) ? field : defaultVal;
+    }
 
-    public static String getFieldSortParam(HttpServletRequest request, String key, String defaultVal) {
+    public static String getFieldFilterParam(HttpServletRequest request, String key, String defaultVal) {
         String field = request.getParameter(key);
         return (field != null && List.of("NEWS","SPORT","SCIENCE").contains(field)) ? field : defaultVal;
     }

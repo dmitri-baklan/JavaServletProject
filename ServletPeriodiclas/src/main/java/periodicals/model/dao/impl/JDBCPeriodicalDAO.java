@@ -86,7 +86,7 @@ public class JDBCPeriodicalDAO implements PeriodicalDAO {
             try(ResultSet res = statement.executeQuery()){
                 if(res.first()){
                     String str = res.getString("p_name");
-                    LOGGER.info("First pertiodical is:{}", str);
+//                    LOGGER.info("First pertiodical is:{}", str);
                     Long pages = res.getLong("pages");
                     Set<Periodical> periodicals = PeriodicalMapper.getPeriodicalSet(res, pageable.getLimit());
                     for(Periodical p : periodicals){
@@ -97,8 +97,7 @@ public class JDBCPeriodicalDAO implements PeriodicalDAO {
                             Math.ceil((double) pages / pageable.getLimit()));
                 }
                 LOGGER.info("ResultSet is empty");
-                return new Page<Periodical>(new HashSet<Periodical>(),
-                        (pageable.getOffset()/pageable.getLimit())+1, 0D);
+                return new Page<Periodical>();
             }
         } catch(SQLException ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());

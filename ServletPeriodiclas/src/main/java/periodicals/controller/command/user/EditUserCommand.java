@@ -19,7 +19,7 @@ public class EditUserCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(EditUserCommand.class.getName());
     private final UserService userService;
     public EditUserCommand() {
-        this(new UserService());
+        this(UserService.getInstance());
     }
     public EditUserCommand(UserService userService) {
         this.userService = userService;

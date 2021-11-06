@@ -1,6 +1,5 @@
-package periodicals.controller;
+package periodicals;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import periodicals.controller.command.*;
@@ -12,7 +11,7 @@ import periodicals.controller.command.user.EditUserCommand;
 import periodicals.controller.command.user.LogoutCommand;
 import periodicals.controller.command.user.ProfileCommand;
 import periodicals.controller.command.user.ProfileReplenishmentCommand;
-import periodicals.util.AttributeKey;
+import periodicals.model.service.PeriodicalService;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -40,10 +39,10 @@ public class Servlet extends HttpServlet {
         commands.put("/profile/replenishment", new ProfileReplenishmentCommand());
         commands.put("/periodicals", new PeriodicalsCommand());
         commands.put("/periodicals/\\d+", new PagePeriodicalCommand());
-        commands.put("/periodicals/d+/edit", new EditPeriodicalCommand());
+        commands.put("/periodicals/\\d+/edit", new EditPeriodicalCommand());
         commands.put("/periodicals/add", new AddPeriodidcalCommand());
-        commands.put("/periodicals/d+/delete", new DeletePeriodicalCommand());
-        commands.put("/periodicals/d+/subscription", new SubscriptionPeriodicalCommand());
+        commands.put("/periodicals/\\d+/delete", new DeletePeriodicalCommand());
+        commands.put("/periodicals/\\d+/subscription", new SubscriptionPeriodicalCommand());
     }
 
     @Override

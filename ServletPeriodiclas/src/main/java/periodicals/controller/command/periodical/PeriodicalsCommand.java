@@ -20,7 +20,7 @@ public class PeriodicalsCommand implements Command {
     private final PeriodicalService periodicalService;
 
     public PeriodicalsCommand() {
-        this(new PeriodicalService());
+        this(PeriodicalService.getInstance());
     }
     public PeriodicalsCommand(PeriodicalService periodicalService) {
         this.periodicalService = periodicalService;
@@ -28,8 +28,8 @@ public class PeriodicalsCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String sortField = Validator.getFieldSortParam(request, "sortFiled", "p_name");
-        String subject = Validator.getFieldSortParam(request, "subject", "");
+        String sortField = Validator.getSortFilterParam(request, "sortField", "p_name");
+        String subject = Validator.getFieldFilterParam(request, "subject", "");
         boolean asc = Validator.isDirectionAsc(request, "asc", true);
         String searchQuery = Validator.getSearchQueryParam(request, "searchQuery", "");
         Integer page = Validator.getDigitParam(request, "page", "1");

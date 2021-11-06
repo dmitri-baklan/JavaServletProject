@@ -1,15 +1,11 @@
-<%--<%@ taglib prefix="fmt" uri="http://java.sun.com/jsf/html" %>--%>
 <%@ include file="/fragments/taglibs.jsp"%>
-<%--<%@ include file="/fragments/taglibs.jsp"%>--%>
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" >
 
 <head>
-<%--    <meta charset="UTF-8">--%>
     <jsp:include page="fragments/head.jsp"/>
     <jsp:include page="fragments/header.jsp"/>
 
-<%--    <link rel="icon" href="#">--%>
 
     <title >
         <fmt:message key="title.welcome"/>

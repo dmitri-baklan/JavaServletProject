@@ -29,7 +29,7 @@ public class PeriodicalMapper {
                 .subscribers(result.getLong("p_subscribers"))
                 .price(result.getLong("p_price"))
                 .build();
-        LOGGER.info("Extract periodcial name:{}", periodical.getName());
+//        LOGGER.info("Extract periodcial name:{}", periodical.getName());
         return periodical;
     }
     public static void setPeriodicalPreparedStatement(Periodical periodical, PreparedStatement statement) throws SQLException {
