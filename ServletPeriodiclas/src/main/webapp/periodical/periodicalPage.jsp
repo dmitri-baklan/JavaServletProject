@@ -42,7 +42,7 @@
                 </c:if>
                 <p class="fs-2" ><c:out value="${periodical.subject}"/></p>
                 <span class="fs-5" ><fmt:message key="page.periodical.price" /></span>
-                <span class="fs-5" ><c:out value="${periodical.subject}"/></span>
+                <span class="fs-5" ><c:out value="${periodical.price}"/></span>
                 <p></p>
                 <span class="fs-5" ><fmt:message key="page.periodical.subscribers" /></span>
                 <span class="fs-5" ><c:out value="${periodical.subscribers}"/></span>

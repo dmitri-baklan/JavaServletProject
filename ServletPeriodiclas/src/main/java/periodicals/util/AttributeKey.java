@@ -12,7 +12,7 @@ public interface AttributeKey {
     public static final String ERROR_NULL = "erroNullField";
     public static final String ERROR_RANGE = "errorValueRange";
     public static final String ERROR_EXIST = "errorAlreadyExist";
-
+    public static final String ERROR_NOT_FOUND = "errorNotFound";
     public static final String LOGGED_USERS = "loggedUsers";
 
 }

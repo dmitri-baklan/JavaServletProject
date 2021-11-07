@@ -68,22 +68,24 @@
             <div class="col">
                 <c:if test="${sessionScope.role == 'READER'}">
                     <p class="fs-3" ><fmt:message key="page.profile.periodical.list" /></p>
-                    <table class="table table-borderless table-hover table-scroll">
-                        <thead class="thead-light">
-                        <tr align="center">
-                            <div class="list-group" >
-                                <th >
-                                    <a class="list-group-item list-group-item-action list-group-item-primary">
-                                    <fmt:message key="table.profile.periodicals.name" />
-                                    </a>
-                                </th>
-                                <th><a class="list-group-item list-group-item-action list-group-item-primary">
-                                    <fmt:message key="table.profile.periodical.cost" /></a></th>
+                    <div class="overflow-auto" style="height: 200px">
+                        <table class="table table-borderless table-hover table-scroll ">
+                            <thead class="thead-light">
+                            <tr align="center">
+                                <div class="list-group" >
+                                    <th >
+                                        <a class="list-group-item list-group-item-action list-group-item-primary">
+                                            <fmt:message key="table.profile.periodicals.name" />
+                                        </a>
+                                    </th>
+                                    <th><a class="list-group-item list-group-item-action list-group-item-primary">
+                                        <fmt:message key="table.profile.periodical.cost" /></a></th>
 
-                            </div>
-                        </tr>
-                        </thead>
-                        <tbody>
+                                </div>
+                            </tr>
+                            </thead>
+                            <tbody >
+
                             <c:forEach var="periodical" items="${user.periodicals}">
                                 <tr scope="row" align="center">
                                     <td class="titleColumn" >
@@ -97,8 +99,10 @@
                                     </td>
                                 </tr>
                             </c:forEach>
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
+
 
                 </c:if>
             </div>

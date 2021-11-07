@@ -33,7 +33,7 @@ public class AccessMatcher {
             "/periodicals/add",
             "/profile/readers",
             "/profile/readers/\\d+",
-            "/profile/\\d+/delete"
+            "/periodicals/\\d+/delete"
     );
 
 }

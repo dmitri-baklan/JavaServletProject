@@ -56,8 +56,9 @@ public class UserMapper{ //implements ObjectMapper<User>{
     }
     public static void setFindByRolePrepearedStatement(Role role, Integer limit, Integer offset, PreparedStatement statement) throws SQLException {
         statement.setString(1, role.name());
-        statement.setInt(2, limit);
-        statement.setInt(3, offset);
+        statement.setString(2, role.name());
+        statement.setInt(3, limit);
+        statement.setInt(4, offset);
     }
 
     public static void setUserPreparedStatement(User user, PreparedStatement statement) throws SQLException {
@@ -80,7 +81,7 @@ public class UserMapper{ //implements ObjectMapper<User>{
     }
 
     public static Set<User> getPeriodicalUserSet(ResultSet result, Integer limit, Long p_id) throws SQLException {
-        Set<User> users = new HashSet<>();
+        Set<User> users = new LinkedHashSet<>();
         result.beforeFirst();
         while((result.next()) && (users.size() < limit)){
             if(result.getLong("u_id") > 0 && result.getLong("p_id") == p_id)

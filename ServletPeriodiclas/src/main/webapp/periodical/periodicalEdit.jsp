@@ -37,8 +37,7 @@
                     <input type="number" class="form-control" aria-describedby="numberHelp"
                            placeholder="<fmt:message key="form.periodical.price"/>" name="price"
                            min="1" max="1000"
-                           value="<c:out value="${periodical.price}"/>"
-                           >
+                           value="<c:out value="${periodical.price}"/>">
                     <c:if test="${errorStringNumbers != null}">
                         <div class="alert-danger">
                             <c:set var="error" value="${errorStringNumbers}"/>

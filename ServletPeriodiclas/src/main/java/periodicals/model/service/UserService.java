@@ -7,6 +7,7 @@ import periodicals.dto.Page;
 import periodicals.dto.UserDTO;
 import periodicals.exception.DataBaseException;
 import periodicals.exception.EmailAlreadyExistException;
+import periodicals.exception.ReaderNotFoundException;
 import periodicals.exception.UserNotFoundException;
 import periodicals.model.dao.FactoryDAO;
 import periodicals.model.dao.UserDAO;
@@ -64,7 +65,7 @@ public class UserService {
 
     public void changeIsActive(Long id)throws UserNotFoundException{
         try{
-            User user = userRepository.findRedaerById(id)
+            User user = userRepository.findReaderById(id)
                     .orElseThrow(UserNotFoundException::new);
 
             user.setActive(!user.isActive());
@@ -89,8 +90,14 @@ public class UserService {
     public Page<User> getAllReaders(int page, int size, String searchQuery){
         Pageable pageable = new Pageable("Name", true, page, size);
         try{
-            return searchQuery.isBlank() ? userRepository.findByRole(Role.READER, pageable)
-                    : userRepository.findByEmail(searchQuery, pageable);
+            if(searchQuery.isBlank()){
+                return userRepository.findByRole(Role.READER, pageable);
+            }
+            Page<User> user = userRepository.findByEmail(searchQuery, pageable);
+            if(user.getItems().stream().anyMatch(u->u.getRole().equals(Role.ADMINISTRATOR))){
+                throw new ReaderNotFoundException();
+            }
+            return user;
         }catch (SQLException ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
             throw new DataBaseException();

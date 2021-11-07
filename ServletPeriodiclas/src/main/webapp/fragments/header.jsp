@@ -56,7 +56,7 @@
                 </c:if>
                 <c:if test="${sessionScope.role == 'READER'}">
                     <li class="nav-item" >
-                        <a class="nav-link" href="<c:url value="/profile/replenishments"/>" >
+                        <a class="nav-link" href="<c:url value="/replenishments"/>" >
                             <fmt:message key="nav.link.replenishments" />
                         </a>
                     </li>

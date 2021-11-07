@@ -23,7 +23,6 @@ public class AuthFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        LOGGER.info("AuthFilter");
         HttpServletRequest httpReq = (HttpServletRequest) servletRequest;
         HttpServletResponse httpRes = (HttpServletResponse) servletResponse;
         HttpSession session = httpReq.getSession();

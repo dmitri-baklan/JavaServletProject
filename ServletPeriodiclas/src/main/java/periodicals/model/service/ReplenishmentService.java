@@ -18,6 +18,7 @@ import periodicals.model.entity.user.User;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.Set;
 
 public class ReplenishmentService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReplenishmentService.class.getName());
@@ -62,16 +63,14 @@ public class ReplenishmentService {
         }
     }
 
-    public Page<Replenishment> getAllReplenishments(int page, int size,
-                                                    String sortField,
-                                                    UserDTO userDetails)throws UserNotFoundException{
+    public Set<Replenishment> getAllReplenishments(String email)throws UserNotFoundException{
 
         try {
-            User user = userRepository.findByEmail(userDetails.getEmail())
+            User user = userRepository.findByEmail(email)
                     .orElseThrow(UserNotFoundException::new);
 
-            Pageable pageable = new Pageable(sortField, false, page, size);
-            return replenishmentRepository.findByUserId(user.getId(), pageable);
+//            Pageable pageable = new Pageable(sortField, false, page, size);
+            return replenishmentRepository.findByUserId(user.getId());
         }catch (SQLException ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
             throw new DataBaseException();

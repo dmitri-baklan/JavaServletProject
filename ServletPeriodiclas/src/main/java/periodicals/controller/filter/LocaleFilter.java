@@ -23,7 +23,6 @@ public class LocaleFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        LOGGER.info("LocaleFilter");
         HttpServletRequest req = (HttpServletRequest) request;
         String langValue = request.getParameter(LANG);
 

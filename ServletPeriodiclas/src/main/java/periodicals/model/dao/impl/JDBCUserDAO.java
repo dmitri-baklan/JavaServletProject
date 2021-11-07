@@ -53,7 +53,7 @@ public class JDBCUserDAO implements UserDAO {
     }
 
     @Override
-    public Optional<User> findRedaerById(Long id)throws SQLException {
+    public Optional<User> findReaderById(Long id)throws SQLException {
         try(PreparedStatement statement = connection.prepareStatement(statements.getProperty("user.find.reader.by.id"),
                 ResultSet.TYPE_SCROLL_SENSITIVE,
                 ResultSet.CONCUR_UPDATABLE)){
@@ -76,7 +76,8 @@ public class JDBCUserDAO implements UserDAO {
         try(PreparedStatement statement = connection.prepareStatement(statements.getProperty("user.find.by.role"),
                 ResultSet.TYPE_SCROLL_SENSITIVE,
                 ResultSet.CONCUR_UPDATABLE)){
-           UserMapper.setFindByRolePrepearedStatement(role,
+           UserMapper.setFindByRolePrepearedStatement(
+                   role,
                    pageable.getLimit(),
                    pageable.getOffset(),
                    statement);

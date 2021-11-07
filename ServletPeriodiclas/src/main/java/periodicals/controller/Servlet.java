@@ -7,10 +7,8 @@ import periodicals.controller.command.guest.LoginCommand;
 import periodicals.controller.command.guest.RegistrationCommand;
 import periodicals.controller.command.guest.WelcomeCommand;
 import periodicals.controller.command.periodical.*;
-import periodicals.controller.command.user.EditUserCommand;
-import periodicals.controller.command.user.LogoutCommand;
-import periodicals.controller.command.user.ProfileCommand;
-import periodicals.controller.command.user.ProfileReplenishmentCommand;
+import periodicals.controller.command.replenishment.ReplenismentsCommand;
+import periodicals.controller.command.user.*;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -35,6 +33,8 @@ public class Servlet extends HttpServlet {
         commands.put("/registration", new RegistrationCommand());
         commands.put("/logout", new LogoutCommand());
         commands.put("/profile/edit", new EditUserCommand());
+        commands.put("/profile/readers", new ReadersCommand());
+        commands.put("/profile/readers/\\d+", new ChangeActivityCommand());
         commands.put("/profile/replenishment", new ProfileReplenishmentCommand());
         commands.put("/periodicals", new PeriodicalsCommand());
         commands.put("/periodicals/\\d+", new PagePeriodicalCommand());
@@ -42,6 +42,7 @@ public class Servlet extends HttpServlet {
         commands.put("/periodicals/add", new AddPeriodidcalCommand());
         commands.put("/periodicals/\\d+/delete", new DeletePeriodicalCommand());
         commands.put("/periodicals/\\d+/subscription", new SubscriptionPeriodicalCommand());
+        commands.put("/replenishments", new ReplenismentsCommand());
     }
 
     @Override

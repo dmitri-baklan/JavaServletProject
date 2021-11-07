@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -34,7 +35,7 @@ public class ReplenishmentMapper {
     }
 
     public static Set<Replenishment> getReplenishmentlSet(ResultSet result, Integer limit) throws SQLException {
-        Set<Replenishment> replenishments = new HashSet<>();
+        Set<Replenishment> replenishments = new LinkedHashSet<>();
         result.beforeFirst();
         while((result.next()) && (replenishments.size() < limit)){
             if(result.getLong("r_id") > 0){

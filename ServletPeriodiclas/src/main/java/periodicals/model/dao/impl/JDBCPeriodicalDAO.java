@@ -174,18 +174,27 @@ public class JDBCPeriodicalDAO implements PeriodicalDAO {
 
     public void changeUserPeriodicalSubscription(User user, Periodical periodical)throws SQLException{
         connection.setAutoCommit(false);
-        try (
-                PreparedStatement statementUsers = connection.prepareStatement(
-                        statements.getProperty("user.update.subscriptions"));
+        boolean isSubscribe = user.getPeriodicals().stream().anyMatch(p->p.getId()==periodical.getId());
+        try (PreparedStatement statementUsers = connection.prepareStatement(
+                        statements.getProperty(isSubscribe ?"user.update.subscriptions":"user.update.balance"));
              PreparedStatement statementPeriodicals = connection.prepareStatement(
                      statements.getProperty("periodical.update.subscribers"));
              PreparedStatement user_periodicals = connection.prepareStatement(
-                     statements.getProperty(user.getPeriodicals().stream().anyMatch(p->p.getId()==periodical.getId())
-                             ? "users_periodicals.insert":"users_periodicals.delete.u_id.and.p_id"));) {
-            statementUsers.setLong(1, user.getSubscriptions());
-            statementUsers.setLong(2, user.getBalance());
-            statementUsers.setLong(3, user.getId());
-            statementUsers.executeUpdate();
+                     statements.getProperty(isSubscribe?
+                             "users_periodicals.insert":"users_periodicals.delete.u_id.and.p_id"))){
+
+            if(isSubscribe){
+                LOGGER.error("TRUE");
+                statementUsers.setLong(1, user.getSubscriptions());
+                statementUsers.setLong(2, user.getBalance());
+                statementUsers.setLong(3, user.getId());
+                statementUsers.executeUpdate();
+            }else if(!isSubscribe){
+                LOGGER.error("FALSE");
+                statementUsers.setLong(1, user.getBalance());
+                statementUsers.setLong(2, user.getId());
+                statementUsers.executeUpdate();
+            }
 
             statementPeriodicals.setLong(1, periodical.getSubscribers());
             statementPeriodicals.setLong(2, periodical.getId());
