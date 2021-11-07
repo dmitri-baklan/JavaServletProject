@@ -28,7 +28,6 @@ public class DeletePeriodicalCommand implements Command {
             periodicalService.deletePeriodical(Validator.getIdFromRequset(request));
         }catch (Exception ex){
             LOGGER.error("[{}]:{}", ex.getClass().getSimpleName(), ex.getMessage());
-//            request.setAttribute(AttributeKey., "exception.periodicals.not.enough.balance");
             return "redirect:/periodicals";
         }
 

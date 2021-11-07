@@ -49,14 +49,9 @@ public class EditPeriodicalCommand implements Command {
             LOGGER.error("Name[{}] are not valid", periodicalDTO.getName());
             request.setAttribute(AttributeKey.ERROR_PATTERN_NAME, "valid.periodical.name.regex");
             request.setAttribute("periodical", periodicalDTO);
-            return "/periodical/periodicalAdd.jsp";
+            return "/periodical/periodicalEdit.jsp";
         }
-//        if(!Validator.checkNumberRegexAndRange(periodicalDTO.getPrice())){
-//            LOGGER.error("Email[{}] are not valid", periodicalDTO.getPrice());
-//            request.setAttribute(AttributeKey.ERROR_NUMBERS, "valid.user.email.regex");
-//            request.setAttribute("periodical", periodicalDTO);
-//            return "/periodical/periodicalAdd.jsp";
-//        }
+
         LOGGER.info("PeriodicalDTO are valid:[{}]", periodicalDTO);
         try{
             periodicalService.savePeriodical(periodicalDTO);
@@ -64,10 +59,9 @@ public class EditPeriodicalCommand implements Command {
             LOGGER.error("[{}]:{}", ex.getClass().getSimpleName(), ex.getMessage());
             request.setAttribute(AttributeKey.ERROR_EXIST, "valid.periodical.name.exists");
             request.setAttribute("periodical", periodicalDTO);
-            return "/periodical/periodicalAdd.jsp";
+            return "/periodical/periodicalEdit.jsp";
         }
 
         return "redirect:/periodicals";
-//        return null;
     }
 }

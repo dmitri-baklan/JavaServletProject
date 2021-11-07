@@ -43,8 +43,6 @@ public class EditUserCommand implements Command {
             request.setAttribute("userDTO", userDTO);
             return "/user/editUser.jsp";
         }
-        //UserDTO userDTO = userService.getUserByEmail(request.getSession().getServletContext().)
-
 
         if(!Validator.checkNameRegex(userDTO.getName(), userDTO.getSurname())){
             LOGGER.error("Name[{}] and Surname[{}] are not valid", userDTO.getEmail(), userDTO.getPassword());
@@ -68,7 +66,6 @@ public class EditUserCommand implements Command {
             User user = new User();
             user.setRole(Role.GUEST);
             CommandUtility.setUserRole(request, response, user);
-            //request.setAttribute(AttributeKey.ERROR_EXIST, "valid.user.email.exists");
             request.setAttribute("userDTO", userDTO);
             return "/user/editUser.jsp";
         }

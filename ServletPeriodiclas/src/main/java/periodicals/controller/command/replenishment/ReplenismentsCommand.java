@@ -36,7 +36,7 @@ public class ReplenismentsCommand implements Command {
 
         }catch (Exception ex){
             LOGGER.error("[{}]:{}", ex.getClass().getSimpleName(), ex.getMessage());
-            return "redirect:/profile";
+            return "/error/500.jsp";
         }
         return "/replenishment/replenishments.jsp";
     }

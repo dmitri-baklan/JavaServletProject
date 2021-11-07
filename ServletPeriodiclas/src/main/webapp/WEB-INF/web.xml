@@ -42,6 +42,6 @@
 
   <error-page>
     <exception-type>java.lang.Exception</exception-type>
-    <location>/error/error.jsp</location>
+    <location>/error/500.jsp</location>
   </error-page>
 </web-app>

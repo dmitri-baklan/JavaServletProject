@@ -31,8 +31,8 @@ public class ChangeActivityCommand implements Command {
             userService.changeIsActive(Validator.getIdFromRequset(request));
         }catch (Exception ex){
             LOGGER.error("[{}]:{}", ex.getClass().getSimpleName(), ex.getMessage());
-//            request.setAttribute(AttributeKey.ERROR_BALANCE, "exception.periodicals.not.enough.balance");
-            return "redirect:/profile/readers";
+
+            return "/error/500.jsp";
         }
 
 

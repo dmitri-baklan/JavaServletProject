@@ -44,12 +44,7 @@ public class AddPeriodidcalCommand implements Command {
             request.setAttribute("periodical", periodicalDTO);
             return "/periodical/periodicalAdd.jsp";
         }
-//        if(!Validator.checkNumberRegexAndRange(periodicalDTO.getPrice())){
-//            LOGGER.error("Email[{}] are not valid", periodicalDTO.getPrice());
-//            request.setAttribute(AttributeKey.ERROR_NUMBERS, "valid.user.email.regex");
-//            request.setAttribute("periodical", periodicalDTO);
-//            return "/periodical/periodicalAdd.jsp";
-//        }
+
         LOGGER.info("PeriodicalDTO are valid:[{}]", periodicalDTO);
         try{
             periodicalService.savePeriodical(periodicalDTO);
@@ -61,6 +56,5 @@ public class AddPeriodidcalCommand implements Command {
         }
 
         return "redirect:/periodicals";
-//        return null;
     }
 }

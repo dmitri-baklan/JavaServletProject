@@ -60,10 +60,6 @@ public class PeriodicalsCommand implements Command {
         request.setAttribute("periodicals", periodicals);
         request.setAttribute("user_subscribe", user_subscribe);
 
-//        (String sortField, String subject,
-//        boolean asc, int page,
-//        int size, String searchQuery
-
         return "/periodical/periodicals.jsp";
     }
 }

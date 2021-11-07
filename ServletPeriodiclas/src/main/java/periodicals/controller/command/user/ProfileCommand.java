@@ -30,10 +30,7 @@ public class ProfileCommand implements Command {
             request.setAttribute("user", userService.getUserByEmail((String)request.getSession().getAttribute("email")));
         }catch(UserNotFoundException ex) {
             LOGGER.error("[{}]{}", ex.getClass().getSimpleName(), ex.getMessage());
-            // TODO: erros hadling
-//            request.setAttribute(AttributeKey.ERROR_CUSTOM.value(),
-//                    LangProperties.getProperty("errors.custom.user.not.found", CommandUtility.getLocale(request)));
-            return "redirect:home.jsp";
+            return "/error/500.jsp";
         }
         return "user/profile.jsp";
     }
