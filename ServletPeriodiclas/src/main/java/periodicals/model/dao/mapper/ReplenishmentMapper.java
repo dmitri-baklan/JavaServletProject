@@ -21,7 +21,6 @@ public class ReplenishmentMapper {
         return Replenishment.builder()
                 .id(result.getLong("r_id"))
                 .sum(result.getLong("r_sum"))
-//                .subject(Subject.valueOf(result.getString("r_user_id")))
                 .time(result.getTimestamp("r_time").toLocalDateTime())
                 .build();
     }

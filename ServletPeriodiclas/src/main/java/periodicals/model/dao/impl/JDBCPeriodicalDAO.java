@@ -86,7 +86,6 @@ public class JDBCPeriodicalDAO implements PeriodicalDAO {
             try(ResultSet res = statement.executeQuery()){
                 if(res.first()){
                     String str = res.getString("p_name");
-//                    LOGGER.info("First pertiodical is:{}", str);
                     Long pages = res.getLong("pages");
                     Set<Periodical> periodicals = PeriodicalMapper.getPeriodicalSet(res, pageable.getLimit());
                     for(Periodical p : periodicals){
@@ -114,11 +113,16 @@ public class JDBCPeriodicalDAO implements PeriodicalDAO {
             try(ResultSet res = statement.executeQuery()){
                 LOGGER.info("RESULT SET: {}", res);
                 if(res.first()){
-                    return new Page<Periodical>(PeriodicalMapper.getPeriodicalSet(res, 2),
+                    Set<Periodical> periodicals = PeriodicalMapper.getPeriodicalSet(res, 1);
+                    res.last();
+                    for(Periodical p : periodicals){
+                        p.setUsers(UserMapper.getPeriodicalUserSet(res ,p.getId()));
+                    }
+                    return new Page<Periodical>(periodicals,
                             0, 0D);
                 }
                 LOGGER.info("ResultSet is empty");
-                return new Page<Periodical>(new HashSet<Periodical>(), 0, 0D);
+                return new Page<Periodical>();
             }
         } catch(SQLException ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
@@ -134,7 +138,6 @@ public class JDBCPeriodicalDAO implements PeriodicalDAO {
             statement.setString(1, subj.name());
             statement.setInt(2, pageable.getLimit());
             statement.setInt(3, pageable.getOffset());
-//            PeriodicalMapper.setFindAllPreperadStatement(statement,pageable);
             try(ResultSet res = statement.executeQuery()){
                 if(res.first()){
                     Long pages = res.getLong("pages");
@@ -164,7 +167,6 @@ public class JDBCPeriodicalDAO implements PeriodicalDAO {
                     return;
                 }
                 LOGGER.info("Periodical are not deleted");
-                return;
             }
         } catch(SQLException ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());

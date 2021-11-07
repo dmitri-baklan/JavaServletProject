@@ -106,8 +106,6 @@ public class JDBCUserDAO implements UserDAO {
             try(ResultSet res = statement.executeQuery()){
                 LOGGER.info("RESULT SET: {}", res);
                 if(res.first()){
-//                    Long totalPages = res.getLong("pages");
-                    //TODO fix totalPages
                     return new Page<User>(UserMapper.getUserSet(res, pageable.getLimit()),
                             (pageable.getOffset()/pageable.getLimit())+1, 0D);
                 }
@@ -141,26 +139,6 @@ public class JDBCUserDAO implements UserDAO {
             throw ex;
         }
     }
-//    public void deleteSubscription(Long user_id, Long periodical_id) throws SQLException {
-//        try(PreparedStatement statement = connection.prepareStatement(
-//                statements.getProperty("users_periodicals.delete.u_id.and.p_id"),
-//                ResultSet.TYPE_SCROLL_SENSITIVE,
-//                ResultSet.CONCUR_UPDATABLE)){
-//            statement.setLong(1, user_id);
-//            statement.setLong(2, periodical_id);
-//            try(ResultSet res = statement.executeQuery()){
-//                if(res.first()){
-//                    LOGGER.info("Subscription was deleted successfully, user_id[{}]",res.getLong("user_id"));
-//                    return;
-//                }
-//                LOGGER.info("Subscription are not deleted");
-//                throw new SQLException();
-//            }
-//        } catch(SQLException ex){
-//            LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
-//            throw ex;
-//        }
-//    }
 
     @Override
     public void close() throws SQLException {

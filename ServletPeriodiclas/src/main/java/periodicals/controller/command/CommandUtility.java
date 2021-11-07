@@ -23,7 +23,6 @@ public class CommandUtility {
 
     public static String setUserRole(HttpServletRequest req, HttpServletResponse res, User user) {
         HttpSession session = req.getSession();
-//        res.addCookie(new Cookie("user_email", email));
         session.setAttribute("email", user.getEmail());
         session.setAttribute("role", user.getRole().name());
         session.setAttribute("name", user.getName());
@@ -57,16 +56,11 @@ public class CommandUtility {
         req.getSession().getServletContext().setAttribute(AttributeKey.LOGGED_USERS, loggedUsers);
         LOGGER.info("[{}] was added to context", email);
     }
-//TODO: cookieException?
+
     public static void deleteUserFromContext(HttpServletRequest req, HttpServletResponse res) {
         ServletContext context = req.getServletContext();
         String email = (String) req.getSession().getAttribute("email");
-//        Cookie cookie = Arrays.stream(req.getCookies())
-//                .filter(a->a.getName().equals("user_email"))
-//                .findFirst()
-//                .orElse(null);
-//        cookie.setMaxAge(0);
-//        res.addCookie(cookie);
+
         @SuppressWarnings("unchecked")
         HashSet<String> loggedUsers = (HashSet<String>) context.getAttribute("loggedUsers");
         loggedUsers = Objects.isNull(loggedUsers)? new HashSet<String>() : loggedUsers;

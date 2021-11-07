@@ -17,12 +17,6 @@
 
 
     <div class="sectionMainContent text-center">
-<%--        <c:if test="${errorBlankField != null}">--%>
-<%--            <div class="alert alert-danger">--%>
-<%--                <c:set value="${errorBlankField}" var="login_error"/>--%>
-<%--                <fmt:message key="${login_error}"/>--%>
-<%--            </div>--%>
-<%--        </c:if>--%>
         <c:if test="${errorNotEnoughBalance != null}">
             <div class="text-center d-flex justify-content-center mt-5">
                 <div class="alert alert-danger w-50" role="alert">
@@ -167,25 +161,7 @@
             <div class="m-xl-5 d-flex justify-content-center">
                 <div>
                     <nav><c:set var="url" value='/periodicals?asc='/>
-<%--                        <c:choose>--%>
-<%--                            <c:when test="${request_params.asc == null || periodicals.asc == 'true'}">--%>
-<%--                                <c:set var="urlSort" value="${url}false" />--%>
-<%--                            </c:when>--%>
-<%--                            <c:when test="${request_params.asc == 'desc'}">--%>
-<%--                                <c:set var="urlSort" value="${url}true" />--%>
-<%--                            </c:when>--%>
-<%--                        </c:choose>--%>
                         <ul class="pagination flex-wrap">
-<%--                            <c:if test="${periodicals.number!=1}"><c:set var="cl" value="page-item"/></c:if>--%>
-<%--                            <c:if test="${periodicals.number==1}"><c:set var="cl" value="page-item disabled"/></c:if>--%>
-<%--                            <c:choose>--%>
-<%--                                <c:when test="${ request_params.get('asc') == null || request_params.get('asc') == 'false'}">--%>
-<%--                                    <c:set var="urlPagin" value="${url}true" />--%>
-<%--                                </c:when>--%>
-<%--                                <c:when test="${request_params.direction == 'true'}">--%>
-<%--                                    <c:set var="urlPagin" value="${url}false" />--%>
-<%--                                </c:when>--%>
-<%--                            </c:choose>--%>
                             <c:if test="${request_params.get('asc') != null}">
                                 <c:set var="urlPagin" value="${url}${request_params.get('asc')}" />
                             </c:if>
@@ -198,14 +174,6 @@
                             <c:if test="${request_params.get('searchQuery') != null && request_params.get('searchQuery') != ''}">
                                 <c:set var="urlPagin" value="${urlPagin}&searchQuery=${request_params.get('searchQuery')}" />
                             </c:if>
-
-<%--                            <li th:class="${periodicals.isFirst() ? 'page-item disabled' : 'page-item' }">--%>
-<%--                                <a th:href="@{${pageUrlPrefix}(page='1')}" class="page-link"><b>&laquo;</b></a>--%>
-<%--                            </li>--%>
-<%--                            <li th:class="${periodicals.isFirst() ? 'page-item disabled' : 'page-item'}">--%>
-<%--                                <a th:href="@{${pageUrlPrefix}(page=${periodicals.getNumber()})}"--%>
-<%--                                   class="page-link"><b>‹</b></a>--%>
-<%--                            </li>--%>
                             <c:forEach begin="1" end="${periodicals.getTotalPages()}" step="1"
                                        var="i" varStatus="<string>">
                                 <li
@@ -214,24 +182,13 @@
 											<c:param name="page" value="${i}"/>
 										</c:url>" class="page-link"><c:out value = "${i}"/></a>
                                 </li>
-<%--                            items="<object>"--%>
                             </c:forEach>
-
-
-<%--                            <li th:class="${periodicals.isLast() ? 'page-item disabled' : 'page-item'}">--%>
-<%--                                <a th:href="@{${pageUrlPrefix}(page=${periodicals.getNumber()+2})}"--%>
-<%--                                   class="page-link"><b>›</b></a>--%>
-<%--                            </li>--%>
-<%--                            <li th:class="${periodicals.isLast() ? 'page-item disabled' : 'page-item'}">--%>
-<%--                                <a th:href="@{${pageUrlPrefix}(page=${periodicals.getTotalPages()})}"--%>
-<%--                                   class="page-link"><b>&raquo;</b></a>--%>
-<%--                            </li>--%>
                         </ul>
                     </nav>
                 </div>
             </div>
         </c:if>
-        <c:if test="${!periodicals.hasContent()}">
+        <c:if test="${(!periodicals.hasContent()) && (errorNotEnoughBalance == null) }">
             <h3 class="m-xl-5 d-flex justify-content-center"
                 > <fmt:message key="periodicals.not.found"/> </h3>
         </c:if>

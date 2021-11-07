@@ -15,17 +15,8 @@ import java.sql.Types;
 import java.util.*;
 import java.util.stream.Stream;
 
-public class UserMapper{ //implements ObjectMapper<User>{
+public class UserMapper{
     private static final Logger LOGGER = LoggerFactory.getLogger(JDBCUserDAO.class.getName());
-
-//    private Long id;
-//    private String email;
-//    private String password;
-//    private String name;
-//    private String surname;
-//    private Role role;
-//    private Long balance;
-//    private boolean isActive = true;
 
     public static User extractFromResultSet(ResultSet result) throws SQLException {
         User user = User.builder()
@@ -52,7 +43,6 @@ public class UserMapper{ //implements ObjectMapper<User>{
             }
         }
         return users;
-                //new Page<>(users, (offset/limit)+1);
     }
     public static void setFindByRolePrepearedStatement(Role role, Integer limit, Integer offset, PreparedStatement statement) throws SQLException {
         statement.setString(1, role.name());
@@ -78,6 +68,18 @@ public class UserMapper{ //implements ObjectMapper<User>{
         if(Objects.nonNull(user.getId())){
             statement.setLong(9, user.getId());
         }
+    }
+
+    public static Set<User> getPeriodicalUserSet(ResultSet result, Long p_id) throws SQLException {
+        Set<User> users = new LinkedHashSet<>();
+        result.beforeFirst();
+        while((result.next())){
+            if(result.getLong("u_id") > 0 && result.getLong("p_id") == p_id)
+            {
+                users.add(extractFromResultSet(result));
+            }
+        }
+        return users;
     }
 
     public static Set<User> getPeriodicalUserSet(ResultSet result, Integer limit, Long p_id) throws SQLException {

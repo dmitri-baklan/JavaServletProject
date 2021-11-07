@@ -36,7 +36,6 @@ public class EditUserCommand implements Command {
                 .role(request.getParameter("role"))
                 .build();
         if(request.getMethod().equals("GET")){
-//            String email = (String)request.getSession().getAttribute("email");
             userDTO.setEmail((String)request.getSession().getAttribute("email"));
             userDTO.setName((String)request.getSession().getAttribute("name"));
             userDTO.setSurname((String)request.getSession().getAttribute("surname"));
@@ -62,12 +61,8 @@ public class EditUserCommand implements Command {
             CommandUtility.setUserRole(request, response, user);
         }catch (Exception ex){
             LOGGER.error("[{}]:{}", ex.getClass().getSimpleName(), ex.getMessage());
-            //TODO change setUserRole!
-            User user = new User();
-            user.setRole(Role.GUEST);
-            CommandUtility.setUserRole(request, response, user);
             request.setAttribute("userDTO", userDTO);
-            return "/user/editUser.jsp";
+            return "/error/500.jsp";
         }
         return "redirect:/profile";
     }

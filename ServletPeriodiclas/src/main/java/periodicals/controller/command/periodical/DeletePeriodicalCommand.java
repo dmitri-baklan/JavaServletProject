@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import periodicals.controller.command.Command;
 import periodicals.controller.validator.Validator;
 import periodicals.model.service.PeriodicalService;
-import periodicals.util.AttributeKey;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -38,18 +38,11 @@ public class UserService {
         this(FactoryDAO.getInstance());
     }
 
-    private UserService(FactoryDAO daoFactory) {
+    public UserService(FactoryDAO daoFactory) {
         this.userRepository = daoFactory.createUserDAO();
     }
 
-//    @Override
-//    public UserDetails loadUserByUsername(String email)throws UserNotFoundException {
-//        return new UserDetailsImpl(userRepository.findByEmail(email).
-//                orElseThrow(()-> new UsernameNotFoundException(String.format("email %s not found", email))));
-//    }
-
     public User getUserAuthority(String email, String password){
-        // TODO: add DigestUtils.md5Hex
         try {
             User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
             if(user.getPassword().equals(DigestUtils.md5Hex(password))){
@@ -104,13 +97,12 @@ public class UserService {
         }
     }
 
-    public void signUpUser(UserDTO userDTO) throws EmailAlreadyExistException {
+    public User signUpUser(UserDTO userDTO) throws EmailAlreadyExistException {
 
         try{
             if(userRepository.findByEmail(userDTO.getEmail()).isPresent()){
                 throw new EmailAlreadyExistException();
             }
-            //TODO .upperCase?
             String encPassword = DigestUtils.md5Hex(userDTO.getPassword());
             User user = User.builder()
                     .email(userDTO.getEmail())
@@ -123,7 +115,7 @@ public class UserService {
                     .subscriptions(Role.valueOf(userDTO.getRole()).equals(Role.READER) ? 0L:null)
                     .build();
 
-            userRepository.save(user);
+            return userRepository.save(user);
 
         }catch (SQLException ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
@@ -135,13 +127,8 @@ public class UserService {
 
     public User updateUser(UserDTO userDTO) throws EmailAlreadyExistException {
         try{
-//            if(userRepository.findByEmail(userDTO.getEmail()).isPresent()){
-//                throw new EmailAlreadyExistException();
-//            }
             User userToUpdate = userRepository.findByEmail(userDTO.getEmail())
                     .orElseThrow(UserNotFoundException::new);
-            ;
-
 
             String encPassword = DigestUtils.md5Hex(userDTO.getPassword());
             User user = User.builder()
@@ -156,7 +143,6 @@ public class UserService {
                     .balance(userToUpdate.getBalance())
                     .subscriptions(userToUpdate.getSubscriptions())
                     .build();
-//            LOGGER.info("User to saving is active: {}", user.isActive());
             userRepository.save(user);
             return user;
         }catch (SQLException ex){
@@ -166,10 +152,4 @@ public class UserService {
 
     }
 
-//    private Pageable buildPage(String sortField, boolean asc, int page, int size) {
-//        Optional<Sort> sort = asc ? Optional.of(Sort.by(sortField).ascending())
-//                : Optional.of(Sort.by(sortField).descending());
-//
-//        return PageRequest.of(page - 1, size, sort.get());
-//    }
 }

@@ -27,7 +27,6 @@ public class RegistrationCommand implements Command {
         this.userService = userService;
     }
 
-// TODO: fix if()
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         UserDTO userDTO = UserDTO.builder()

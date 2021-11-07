@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 public class EditPeriodicalCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(EditPeriodicalCommand.class.getName());
 
-    private PeriodicalService periodicalService;
+    private final PeriodicalService periodicalService;
 
     public EditPeriodicalCommand() {
         this(PeriodicalService.getInstance());
@@ -54,7 +54,7 @@ public class EditPeriodicalCommand implements Command {
 
         LOGGER.info("PeriodicalDTO are valid:[{}]", periodicalDTO);
         try{
-            periodicalService.savePeriodical(periodicalDTO);
+            periodicalService.updatePeriodical(periodicalDTO, periodical_id);
         }catch (Exception ex){
             LOGGER.error("[{}]:{}", ex.getClass().getSimpleName(), ex.getMessage());
             request.setAttribute(AttributeKey.ERROR_EXIST, "valid.periodical.name.exists");

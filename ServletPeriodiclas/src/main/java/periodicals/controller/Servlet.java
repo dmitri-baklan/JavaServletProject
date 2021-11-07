@@ -76,6 +76,6 @@ public class Servlet extends HttpServlet {
 
     private  Command getCommandByURI(String uri) {
         Optional <String> regex = commands.keySet().stream().filter(uri::matches).findFirst();
-        return commands.get(regex.isPresent() ? regex.get() : "\\/welcome\\/?");
+        return commands.get(regex.isPresent() ? regex.get() : "/welcome");
     }
 }

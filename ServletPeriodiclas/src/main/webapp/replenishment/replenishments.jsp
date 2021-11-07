@@ -1,4 +1,5 @@
 <%@ include file="/fragments/taglibs.jsp"%>
+<%@taglib uri="http://example.com/functions" prefix="f" %>
 <!DOCTYPE html >
 <html lang="en">
 
@@ -48,7 +49,8 @@
                                                 <c:out value="${replenishment.getSum()}"/>
                                             </td>
                                             <td class="align-middle">
-                                                <c:out value="${replenishment.getTime()}"/>
+<%--                                                <c:out value="${replenishment.getTime()}"/>--%>
+                                                <c:out value="${f:formatLocalDateTime(replenishment.getTime(), 'dd.MM.yyyy HH:mm:ss')}" />
                                             </td>
                                         </tr>
                                     </c:forEach>

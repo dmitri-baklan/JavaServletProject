@@ -14,7 +14,7 @@ public class PagePeriodicalCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(PagePeriodicalCommand.class.getName());
 
     private PeriodicalService periodicalService;
-//
+
     public PagePeriodicalCommand() {
         this(PeriodicalService.getInstance());
     }

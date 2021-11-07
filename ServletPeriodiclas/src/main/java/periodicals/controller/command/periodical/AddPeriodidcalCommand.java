@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AddPeriodidcalCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(AddPeriodidcalCommand.class.getName());
 
-    private PeriodicalService periodicalService;
+    private final PeriodicalService periodicalService;
 
     public AddPeriodidcalCommand() {
         this(PeriodicalService.getInstance());

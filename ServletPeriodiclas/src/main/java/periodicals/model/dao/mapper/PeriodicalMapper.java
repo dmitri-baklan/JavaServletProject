@@ -29,7 +29,6 @@ public class PeriodicalMapper {
                 .subscribers(result.getLong("p_subscribers"))
                 .price(result.getLong("p_price"))
                 .build();
-//        LOGGER.info("Extract periodcial name:{}", periodical.getName());
         return periodical;
     }
     public static void setPeriodicalPreparedStatement(Periodical periodical, PreparedStatement statement) throws SQLException {
@@ -46,10 +45,6 @@ public class PeriodicalMapper {
         statement.setInt(1, pageable.getLimit());
         statement.setInt(2, pageable.getOffset());
     }
-//    public static void setSubscriptionStatement(PreparedStatement statement,Long user_id, Long periodical_id)throws SQLException{
-//        statement.setInt(1, pageable.getLimit());
-//        statement.setInt(2, pageable.getOffset());
-//    }
 
     public static Set<Periodical> getPeriodicalSet(ResultSet result, Integer limit) throws SQLException {
         Set<Periodical> periodicals = new LinkedHashSet<>();
@@ -60,7 +55,6 @@ public class PeriodicalMapper {
                 periodicals.add(periodical);
             }
         }
-        //EntryStream.
         LOGGER.info("Periodicals set: {}", periodicals);
         return periodicals;
     }

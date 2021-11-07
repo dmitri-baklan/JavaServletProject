@@ -16,7 +16,6 @@ public class Validator {
 
 
     private Validator() {}
-    // TODO:noneMatch!!!!!!!!!!
 
     public static boolean checkIsNotBlank(String... fields) {
         return Arrays.stream(fields).noneMatch(a -> a==null || a.isBlank());
@@ -72,7 +71,6 @@ public class Validator {
     public static Long getIdFromRequset(HttpServletRequest request) {
         String field = request.getRequestURI();
         Pattern p = Pattern.compile(".*?(\\d+).*");
-//        final String theString = "Incident #492 -  The Title Description";
         String substring = new String();
         Matcher m = p.matcher(field);
         if (m.matches()) {

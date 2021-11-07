@@ -42,6 +42,5 @@ public enum Role {
         }
     };
 
-    //private List<String> endpoints;
     public abstract List<String> getEndpoints();
 }

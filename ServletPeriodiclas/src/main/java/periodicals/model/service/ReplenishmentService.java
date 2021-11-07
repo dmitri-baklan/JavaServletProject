@@ -68,8 +68,6 @@ public class ReplenishmentService {
         try {
             User user = userRepository.findByEmail(email)
                     .orElseThrow(UserNotFoundException::new);
-
-//            Pageable pageable = new Pageable(sortField, false, page, size);
             return replenishmentRepository.findByUserId(user.getId());
         }catch (SQLException ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());

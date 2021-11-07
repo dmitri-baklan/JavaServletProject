@@ -5,10 +5,7 @@ import org.slf4j.LoggerFactory;
 import periodicals.dto.Page;
 import periodicals.dto.PeriodicalDTO;
 import periodicals.dto.UserDTO;
-import periodicals.exception.DataBaseException;
-import periodicals.exception.NotEnoughBalanceException;
-import periodicals.exception.PeriodicalNotFoundException;
-import periodicals.exception.UserNotFoundException;
+import periodicals.exception.*;
 import periodicals.model.dao.FactoryDAO;
 import periodicals.model.dao.PeriodicalDAO;
 import periodicals.model.dao.UserDAO;
@@ -43,23 +40,26 @@ public class PeriodicalService {
         userRepository =daoFactory.createUserDAO();
     }
 
-//    public PeriodicalService(FactoryDAO daoFactory) {
-//        this.periodicalRepository = daoFactory.createPeriodicalDAO();
-//        this.userRepository = daoFactory.createUserDAO();
-//    }
+    public PeriodicalService(FactoryDAO factoryDAO, PeriodicalDAO periodicalDAO, UserDAO userDAO) {
+        this.daoFactory = factoryDAO;
+        periodicalRepository = periodicalDAO;
+        userRepository = userDAO;
+    }
 
-    public void savePeriodical(PeriodicalDTO periodicalDTO){
-//        periodicalRepository = daoFactory.createPeriodicalDAO();
-        Periodical periodical = Periodical
-                .builder()
-                .id(periodicalDTO.getId())
-                .name(periodicalDTO.getName())
-                .subject(periodicalDTO.getSubject())
-                .price(periodicalDTO.getPrice())
-                .subscribers(periodicalDTO.getSubscribers())
-                .build();
+    public Periodical savePeriodical(PeriodicalDTO periodicalDTO)throws PeriodicalAlreadyExistException {
         try{
-            periodicalRepository.save(periodical);
+            if(!(periodicalRepository.findByName(periodicalDTO.getName()).getItems().isEmpty())){
+                throw new PeriodicalAlreadyExistException();
+            }
+            Periodical periodical = Periodical
+                    .builder()
+                    .id(periodicalDTO.getId())
+                    .name(periodicalDTO.getName())
+                    .subject(periodicalDTO.getSubject())
+                    .price(periodicalDTO.getPrice())
+                    .subscribers(periodicalDTO.getSubscribers())
+                    .build();
+            return periodicalRepository.save(periodical);
         }catch (SQLException ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
             throw new DataBaseException();
@@ -68,7 +68,6 @@ public class PeriodicalService {
 
     public Periodical getPeriodicalById(Long id)throws PeriodicalNotFoundException {
         try {
-//            periodicalRepository = daoFactory.createPeriodicalDAO();
             return periodicalRepository.findById(id).orElseThrow(PeriodicalNotFoundException::new);
         }catch (SQLException ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
@@ -83,7 +82,6 @@ public class PeriodicalService {
 
         Pageable pageable = new Pageable(sortField, asc, page, size);
         try{
-//            periodicalRepository = daoFactory.createPeriodicalDAO();
             if(subject.isBlank()){
                 return searchQuery.isBlank() ? periodicalRepository.findAll(pageable)
                         : periodicalRepository.findByName(searchQuery);
@@ -99,9 +97,15 @@ public class PeriodicalService {
     }
 
 
-    public void updatePeriodical(PeriodicalDTO periodicalDTO, Long id){
+    public void updatePeriodical(PeriodicalDTO periodicalDTO, Long id)throws PeriodicalAlreadyExistException{
         try{
-//            periodicalRepository = daoFactory.createPeriodicalDAO();
+            Page<Periodical> periodical = periodicalRepository.findByName(periodicalDTO.getName());
+            LOGGER.info("Periodical:{}", periodical.getItems().stream().findFirst());
+            if(!periodical.getItems().isEmpty()){
+                if(periodical.getItems().stream().anyMatch(p->p.getId()!=id)){
+                    throw new PeriodicalAlreadyExistException();
+                }
+            }
             periodicalRepository.save(
                     Periodical.builder()
                             .id(id)
@@ -119,7 +123,6 @@ public class PeriodicalService {
 
     public void deletePeriodical(Long id){
         try{
-//            periodicalRepository = daoFactory.createPeriodicalDAO();
             periodicalRepository.deleteById(id);
         }catch (SQLException ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
@@ -129,31 +132,14 @@ public class PeriodicalService {
     }
 
 
-    /**
-     * Change current subscription status of Periodical for current user.<br>
-     * If current user already has this periodical in <code>user.periodicals</code> than <code>remove</code><br>
-     * If current user is not subscribed yet in this periodical:
-     * <ul>
-     *     <li>If current <em>periodical price</em> bigger than <em>user balance</em> throw <code>NotEnoughBalanceException</code></li>
-     *     <li>If current <em>user balance</em> bigger <em>periodical price</em> than <code>add</code> periodical to current user</li>
-     * </ul>
-     * @param id of Periodical which should change subscription
-     * @param userDetails data for getting current <code>user</code> from DB
-     * @throws PeriodicalNotFoundException
-     * @throws UserNotFoundException
-     * @throws NotEnoughBalanceException
-     */
-    //TODO CHANGE SUBSCRIPTION!!!!
-    public void changeSubscription(Long id, String email)
+
+    public void changeSubscription(Long periodical_id, String user_email)
             throws PeriodicalNotFoundException, UserNotFoundException, NotEnoughBalanceException{
 
         try{
-//            periodicalRepository = daoFactory.createPeriodicalDAO();
-            //userRepository = daoFactory.createUserDAO();
-
-            Periodical periodical = periodicalRepository.findById(id)
+            Periodical periodical = periodicalRepository.findById(periodical_id)
                     .orElseThrow(PeriodicalNotFoundException::new);
-            User user = userRepository.findByEmail(email)
+            User user = userRepository.findByEmail(user_email)
                     .orElseThrow(UserNotFoundException::new);
 
             if(!user.getPeriodicals().removeIf(p-> p.getId() == periodical.getId())){

@@ -51,12 +51,7 @@ public class JDBCReplenishmentDAO implements ReplenishmentDAO {
             throw ex;
         }
     }
-//    Optional<Replenishment> replenishment = Optional.of(ReplenishmentMapper.extractFromResultSet(res));
-//                    res.last();
-//                    replenishment.get().setUser(UserMapper
-//                                                        .getUserSet(res, 1).stream()
-//                            .findFirst()
-//                            .orElseThrow(UserNotFoundException::new));
+
     @Override
     public Set<Replenishment> findByUserId(Long id)throws SQLException {
         try(PreparedStatement statement = connection.prepareStatement(statements.getProperty("replenishment.find.by.user_id"),
@@ -67,7 +62,6 @@ public class JDBCReplenishmentDAO implements ReplenishmentDAO {
                 if(res.first()){
                     User user = UserMapper.getUserSet(res, 1).stream().findAny().get();
                     res.last();
-                    //Optional<Replenishment> replenishment = Optional.of(ReplenishmentMapper.extractFromResultSet(res));
                     Set<Replenishment> replenishments = ReplenishmentMapper.getReplenishmentlSet(res, res.getRow());
                     replenishments.forEach(r->r.setUser(user));
                     return replenishments;
@@ -83,6 +77,11 @@ public class JDBCReplenishmentDAO implements ReplenishmentDAO {
 
     @Override
     public void close() throws Exception {
-
+        try {
+            connection.close();
+        } catch (SQLException ex) {
+            LOGGER.error("{}: {}",ex.getClass().getSimpleName(), ex.getMessage());
+            throw ex;
+        }
     }
 }

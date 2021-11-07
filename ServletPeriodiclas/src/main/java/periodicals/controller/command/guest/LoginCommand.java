@@ -50,11 +50,6 @@ public class LoginCommand implements Command {
         // TODO AttributeKey
         try {
             User user = userService.getUserAuthority(email, password);
-//            if(user.getRole().equals(Role.GUEST)){
-//                CommandUtility.setUserRole(request, response, user);
-//                request.setAttribute(AttributeKey.ERROR_BLANK,"form.signin.incorrect.data");
-//                return "login.jsp";
-//            }
             if(!user.isActive()){
                 throw new UserIsNotActiveException();
             }

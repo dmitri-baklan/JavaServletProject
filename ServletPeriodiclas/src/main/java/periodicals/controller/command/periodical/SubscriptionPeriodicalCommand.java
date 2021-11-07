@@ -29,7 +29,7 @@ public class SubscriptionPeriodicalCommand implements Command {
         }catch (Exception ex){
             LOGGER.error("[{}]:{}", ex.getClass().getSimpleName(), ex.getMessage());
             request.setAttribute(AttributeKey.ERROR_BALANCE, "exception.periodicals.not.enough.balance");
-            return "redirect:/periodicals";
+            return "/periodical/periodicals.jsp";
         }
 
         return "redirect:/periodicals";
