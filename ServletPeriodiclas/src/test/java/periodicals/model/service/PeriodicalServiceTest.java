@@ -1,4 +1,4 @@
-package periodicals;
+package periodicals.model.service;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.junit.*;

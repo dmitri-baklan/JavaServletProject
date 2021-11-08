@@ -35,11 +35,11 @@ public class UserService {
     }
 
     private UserService() {
-        this(FactoryDAO.getInstance());
+        this(FactoryDAO.getInstance().createUserDAO());
     }
 
-    public UserService(FactoryDAO daoFactory) {
-        this.userRepository = daoFactory.createUserDAO();
+    public UserService(UserDAO userDAO) {
+        this.userRepository = userDAO;
     }
 
     public User getUserAuthority(String email, String password){
