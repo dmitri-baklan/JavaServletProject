@@ -5,10 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import periodicals.dto.Page;
 import periodicals.dto.UserDTO;
-import periodicals.exception.DataBaseException;
-import periodicals.exception.EmailAlreadyExistException;
-import periodicals.exception.ReaderNotFoundException;
-import periodicals.exception.UserNotFoundException;
+import periodicals.exception.*;
 import periodicals.model.dao.FactoryDAO;
 import periodicals.model.dao.UserDAO;
 import periodicals.model.dao.pageable.Pageable;
@@ -42,13 +39,13 @@ public class UserService {
         this.userRepository = userDAO;
     }
 
-    public User getUserAuthority(String email, String password){
+    public User getUserAuthority(String email, String password)throws UserNotFoundException, IncorrectPasswordException {
         try {
             User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
             if(user.getPassword().equals(DigestUtils.md5Hex(password))){
                 return user;
             }
-            return new User();
+            throw new IncorrectPasswordException();
         }catch (SQLException ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
             throw new DataBaseException();
