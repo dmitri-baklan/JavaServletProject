@@ -14,6 +14,7 @@ import periodicals.util.AttributeKey;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Objects;
 
 public class ProfileReplenishmentCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProfileReplenishmentCommand.class.getName());
@@ -34,12 +35,17 @@ public class ProfileReplenishmentCommand implements Command {
         if(request.getMethod().equals("GET")){
             return "/user/replenishment.jsp";
         }
+        String value = request.getParameter("value");
         String email = (String) request.getSession().getAttribute("email");
-        ReplenishmentDTO replenishmentDTO = ReplenishmentDTO.builder()
-                .value(Long.valueOf(request.getParameter("value")))
-                .build();
-        LOGGER.info("PeriodicalDTO are valid:[{}]", replenishmentDTO);
+        ReplenishmentDTO replenishmentDTO = ReplenishmentDTO.builder().build();
+        if(Objects.isNull(value) || value.isBlank()){
+            LOGGER.error("Value[{}] are not valid", value);
+            request.setAttribute(AttributeKey.ERROR_BLANK, "valid.replenishment.sum.blank");
+            return "/periodical/periodicalAdd.jsp";
+        }
+        replenishmentDTO.setValue(Long.valueOf(value));
 
+        LOGGER.info("ReplenishmentDTO are valid:[{}]", replenishmentDTO);
         try{
             replenishmentService.replenishBalance(email,replenishmentDTO);
         }catch (Exception ex){

@@ -23,6 +23,9 @@
                     <div>
                         <c:set value="${errorNotEnoughBalance}" var="subscription_error"/>
                         <strong><fmt:message key="${subscription_error}"/></strong>
+                        <a href="<c:url value="/profile/replenishment"/>">
+                            <fmt:message key="exception.periodicals.not.enough.balance.replenishment"/>
+                        </a>
                     </div>
                 </div>
             </div>

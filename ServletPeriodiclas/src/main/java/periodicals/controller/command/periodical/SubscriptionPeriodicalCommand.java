@@ -9,6 +9,8 @@ import periodicals.util.AttributeKey;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SubscriptionPeriodicalCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(SubscriptionPeriodicalCommand.class.getName());
@@ -31,7 +33,6 @@ public class SubscriptionPeriodicalCommand implements Command {
             request.setAttribute(AttributeKey.ERROR_BALANCE, "exception.periodicals.not.enough.balance");
             return "/periodical/periodicals.jsp";
         }
-
         return "redirect:/periodicals";
     }
 }

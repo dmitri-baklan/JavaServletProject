@@ -38,9 +38,9 @@
                            placeholder="<fmt:message key="form.periodical.price"/>" name="price"
                            min="1" max="1000"
                            value="<c:out value="${periodical.price}"/>">
-                    <c:if test="${errorStringNumbers != null}">
+                    <c:if test="${errorBlankField != null}">
                         <div class="alert-danger">
-                            <c:set var="error" value="${errorStringNumbers}"/>
+                            <c:set var="error" value="${errorBlankField}"/>
                             <fmt:message key="${error}"/>
                         </div>
                     </c:if>

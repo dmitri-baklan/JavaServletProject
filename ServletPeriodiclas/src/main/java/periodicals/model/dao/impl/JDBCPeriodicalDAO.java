@@ -186,13 +186,11 @@ public class JDBCPeriodicalDAO implements PeriodicalDAO {
                              "users_periodicals.insert":"users_periodicals.delete.u_id.and.p_id"))){
 
             if(isSubscribe){
-                LOGGER.error("TRUE");
                 statementUsers.setLong(1, user.getSubscriptions());
                 statementUsers.setLong(2, user.getBalance());
                 statementUsers.setLong(3, user.getId());
                 statementUsers.executeUpdate();
             }else if(!isSubscribe){
-                LOGGER.error("FALSE");
                 statementUsers.setLong(1, user.getBalance());
                 statementUsers.setLong(2, user.getId());
                 statementUsers.executeUpdate();

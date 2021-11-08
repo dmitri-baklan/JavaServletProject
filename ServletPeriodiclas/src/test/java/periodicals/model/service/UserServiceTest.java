@@ -198,16 +198,7 @@ public class UserServiceTest{
         assertNotNull(returnedUser);
         assertEquals(returnedUser.getEmail(), existingEmail);
     }
-//              .id(userToUpdate.getId())
-//            .name(userDTO.getName())
-//            .surname(userDTO.getSurname())
-//            .email(userDTO.getEmail())
-//            .password(encPassword)
-//                    .periodicals(userToUpdate.getPeriodicals())
-//            .role(userToUpdate.getRole())
-//            .isActive(userToUpdate.isActive())
-//            .balance(userToUpdate.getBalance())
-//            .subscriptions(userToUpdate.getSubscriptions())
+
     @Test
     public void testUpdateUser_ShouldSaveNewUser() {
         User user = User.builder()

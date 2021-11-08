@@ -89,7 +89,7 @@
                                             <form method="POST" action="<c:url value="/profile/readers/${reader.id}"/> ">
                                                 <c:if test="${reader.isActive()}">
                                                     <td class="align-middle">
-                                                        <button type="submit" class="btn btn-outline-warning">
+                                                        <button type="submit" class="btn btn-warning">
                                                             <div>
                                                                 <fmt:message key="table.readers.status.block"/>
                                                             </div>
@@ -98,7 +98,7 @@
                                                 </c:if>
                                                 <c:if test="${!reader.isActive()}">
                                                     <td class="align-middle">
-                                                        <button type="submit" class="btn btn-outline-secondary">
+                                                        <button type="submit" class="btn btn-secondary">
                                                             <div>
                                                                 <fmt:message key="table.readers.status.unblock"/>
                                                             </div>

@@ -13,6 +13,7 @@ import periodicals.util.AttributeKey;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Objects;
 
 public class AddPeriodidcalCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(AddPeriodidcalCommand.class.getName());
@@ -33,9 +34,9 @@ public class AddPeriodidcalCommand implements Command {
         if(request.getMethod().equals("GET")){
             return "/periodical/periodicalAdd.jsp";
         }
+        String price = request.getParameter("price");
         PeriodicalDTO periodicalDTO = PeriodicalDTO.builder()
                 .name(request.getParameter("name"))
-                .price(Long.valueOf(request.getParameter("price")))
                 .subject(Subject.valueOf(request.getParameter("subject")))
                 .build();
         if(!Validator.checkNameRegex(periodicalDTO.getName())){
@@ -44,7 +45,13 @@ public class AddPeriodidcalCommand implements Command {
             request.setAttribute("periodical", periodicalDTO);
             return "/periodical/periodicalAdd.jsp";
         }
-
+        if(Objects.isNull(price) || price.isBlank()){
+            LOGGER.error("Price[{}] are not valid", periodicalDTO.getPrice());
+            request.setAttribute(AttributeKey.ERROR_BLANK, "valid.periodical.price");
+            request.setAttribute("periodical", periodicalDTO);
+            return "/periodical/periodicalAdd.jsp";
+        }
+        periodicalDTO.setPrice(Long.valueOf(price));
         LOGGER.info("PeriodicalDTO are valid:[{}]", periodicalDTO);
         try{
             periodicalService.savePeriodical(periodicalDTO);

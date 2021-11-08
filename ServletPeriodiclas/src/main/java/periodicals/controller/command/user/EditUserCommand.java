@@ -43,12 +43,19 @@ public class EditUserCommand implements Command {
             return "/user/editUser.jsp";
         }
 
-        if(!Validator.checkNameRegex(userDTO.getName(), userDTO.getSurname())){
+        if(!Validator.checkNameRegex(userDTO.getName())){
             LOGGER.error("Name[{}] and Surname[{}] are not valid", userDTO.getEmail(), userDTO.getPassword());
             request.setAttribute(AttributeKey.ERROR_PATTERN_NAME, "valid.user.name.regex");
             request.setAttribute("userDTO", userDTO);
             return "/user/editUser.jsp";
         }
+        if(!Validator.checkNameRegex(userDTO.getSurname())){
+            LOGGER.error("Name[{}] and Surname[{}] are not valid", userDTO.getEmail(), userDTO.getPassword());
+            request.setAttribute(AttributeKey.ERROR_PATTERN_NAME, "valid.user.name.regex");
+            request.setAttribute("userDTO", userDTO);
+            return "/user/editUser.jsp";
+        }
+
         if(Validator.checkStringLength(6,20, userDTO.getPassword())){
             LOGGER.error("Password[{}] are not valid", userDTO.getPassword());
             request.setAttribute(AttributeKey.ERROR_PATTERN_PASSWORD, "valid.user.password.size");

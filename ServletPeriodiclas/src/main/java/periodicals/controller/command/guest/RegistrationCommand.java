@@ -39,7 +39,7 @@ public class RegistrationCommand implements Command {
         if(request.getMethod().equals("GET")){
             return "registration.jsp";
         }
-        if(!Validator.checkNameRegex(userDTO.getName(), userDTO.getSurname())){
+        if(!Validator.checkNameRegex(userDTO.getName())){
             LOGGER.error("Name[{}] are not valid", userDTO.getName());
             request.setAttribute(AttributeKey.ERROR_PATTERN_NAME, "valid.user.name.regex");
             request.setAttribute("userDTO", userDTO);

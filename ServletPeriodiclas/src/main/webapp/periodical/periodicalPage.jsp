@@ -50,35 +50,37 @@
             <c:if test="${sessionScope.role == 'ADMINISTRATOR'}">
                 <div class="col" >
                     <p class="fs-3" ><fmt:message key="page.periodical.users.list" /></p>
-                    <table class="table table-borderless table-hover table-scroll">
-                        <thead class="thead-light">
-                        <tr align="center">
-                            <div class="list-group" >
-                                <th ><a class="list-group-item list-group-item-action list-group-item-primary"
-                                       ><fmt:message key="table.periodical.users.login" /></a></th>
-                                <th><a class="list-group-item list-group-item-action list-group-item-primary"
-                                      >
-                                    <fmt:message key="table.periodical.users.name.and.surname" />
-                                </a></th>
+                    <div class="overflow-auto" style="height: 200px">
+                        <table class="table table-borderless table-hover table-scroll">
+                            <thead class="thead-light">
+                            <tr align="center">
+                                <div class="list-group" >
+                                    <th ><a class="list-group-item list-group-item-action list-group-item-primary"
+                                    ><fmt:message key="table.periodical.users.login" /></a></th>
+                                    <th><a class="list-group-item list-group-item-action list-group-item-primary"
+                                    >
+                                        <fmt:message key="table.periodical.users.name.and.surname" />
+                                    </a></th>
 
-                            </div>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach var="user" items="${users}">
-                            <tr scope="row"  align="center">
-
-                                <td class="titleColumn" >
-                                    <c:out value="${user.email}"/>
-                                </td>
-                                <td >
-                                    <c:out value="${user.name} ${user.surname}"/>
-                                </td>
+                                </div>
                             </tr>
-                        </c:forEach>
+                            </thead>
+                            <tbody>
+                            <c:forEach var="user" items="${users}">
+                                <tr scope="row"  align="center">
 
-                        </tbody>
-                    </table>
+                                    <td class="titleColumn" >
+                                        <c:out value="${user.email}"/>
+                                    </td>
+                                    <td >
+                                        <c:out value="${user.name} ${user.surname}"/>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </c:if>
 
