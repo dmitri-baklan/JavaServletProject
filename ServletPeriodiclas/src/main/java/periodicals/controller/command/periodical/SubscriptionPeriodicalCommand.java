@@ -17,7 +17,7 @@ public class SubscriptionPeriodicalCommand implements Command {
     private final PeriodicalService periodicalService;
 
     public SubscriptionPeriodicalCommand() {
-        this(PeriodicalService.getInstance());
+        this(new PeriodicalService());
     }
     public SubscriptionPeriodicalCommand(PeriodicalService periodicalService) {
         this.periodicalService = periodicalService;

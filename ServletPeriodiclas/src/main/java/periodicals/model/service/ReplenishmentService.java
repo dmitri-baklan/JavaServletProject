@@ -23,29 +23,19 @@ import java.util.Set;
 public class ReplenishmentService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReplenishmentService.class.getName());
 
-    private ReplenishmentDAO replenishmentRepository;
-    private UserDAO userRepository;
+    FactoryDAO factoryDAO;
 
-    private static ReplenishmentService instance;
-
-    public static ReplenishmentService getInstance(){
-        if(instance == null){
-            instance = new ReplenishmentService();
-        }
-        return instance;
-    }
-
-    private ReplenishmentService() {
+    public ReplenishmentService() {
         this(FactoryDAO.getInstance());
     }
 
-    private ReplenishmentService(FactoryDAO daoFactory) {
-        this.replenishmentRepository = daoFactory.createReplenishmentDAO();
-        this.userRepository = daoFactory.createUserDAO();
+    private ReplenishmentService(FactoryDAO factoryDAO) {
+        this.factoryDAO = factoryDAO;
     }
 
     public void replenishBalance(String email, ReplenishmentDTO replenishmentDTO) throws RuntimeException {
-        try{
+        try(ReplenishmentDAO replenishmentRepository = factoryDAO.createReplenishmentDAO();
+            UserDAO userRepository = factoryDAO.createUserDAO();){
             User user = userRepository.findByEmail(email)
                     .orElseThrow(UserNotFoundException::new);
 
@@ -57,7 +47,7 @@ public class ReplenishmentService {
                     .user(user)
                     .time(LocalDateTime.now())
                     .build());
-        }catch (SQLException ex){
+        }catch (Exception ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
             throw new DataBaseException();
         }
@@ -65,11 +55,12 @@ public class ReplenishmentService {
 
     public Set<Replenishment> getAllReplenishments(String email)throws UserNotFoundException{
 
-        try {
+        try(ReplenishmentDAO replenishmentRepository = factoryDAO.createReplenishmentDAO();
+             UserDAO userRepository = factoryDAO.createUserDAO();){
             User user = userRepository.findByEmail(email)
                     .orElseThrow(UserNotFoundException::new);
             return replenishmentRepository.findByUserId(user.getId());
-        }catch (SQLException ex){
+        }catch (Exception ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
             throw new DataBaseException();
         }

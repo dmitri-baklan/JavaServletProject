@@ -19,7 +19,7 @@ public class EditPeriodicalCommand implements Command {
     private final PeriodicalService periodicalService;
 
     public EditPeriodicalCommand() {
-        this(PeriodicalService.getInstance());
+        this(new PeriodicalService());
     }
     public EditPeriodicalCommand(PeriodicalService periodicalService) {
         this.periodicalService = periodicalService;

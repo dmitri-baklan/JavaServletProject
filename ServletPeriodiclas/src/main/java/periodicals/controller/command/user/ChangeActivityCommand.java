@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import periodicals.controller.command.Command;
 import periodicals.controller.validator.Validator;
+import periodicals.model.service.PeriodicalService;
 import periodicals.model.service.UserService;
 import periodicals.util.AttributeKey;
 
@@ -16,7 +17,7 @@ public class ChangeActivityCommand implements Command {
     private final UserService userService;
 
     public ChangeActivityCommand() {
-        this(UserService.getInstance());
+        this(new UserService());
     }
 
     private ChangeActivityCommand(UserService userService) {

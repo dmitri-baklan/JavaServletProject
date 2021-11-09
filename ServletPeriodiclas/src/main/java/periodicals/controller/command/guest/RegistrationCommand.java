@@ -21,7 +21,7 @@ public class RegistrationCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationCommand.class.getName());
     private final UserService userService;
     public RegistrationCommand() {
-        this(UserService.getInstance());
+        this(new UserService());
     }
     public RegistrationCommand(UserService userService) {
         this.userService = userService;

@@ -21,7 +21,7 @@ public class AddPeriodidcalCommand implements Command {
     private final PeriodicalService periodicalService;
 
     public AddPeriodidcalCommand() {
-        this(PeriodicalService.getInstance());
+        this(new PeriodicalService());
     }
     public AddPeriodidcalCommand(PeriodicalService periodicalService) {
         this.periodicalService = periodicalService;

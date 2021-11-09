@@ -20,33 +20,28 @@ public class UserService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class.getName());
 
-    private UserDAO userRepository;
+    FactoryDAO factoryDAO;
 
-    private static UserService instance;
-
-    public static UserService getInstance(){
-        if(instance == null){
-            instance = new UserService();
-        }
-        return instance;
+    public UserService() {
+        this(FactoryDAO.getInstance());
     }
 
-    private UserService() {
-        this(FactoryDAO.getInstance().createUserDAO());
+    public UserService(FactoryDAO factoryDAO) {
+        this.factoryDAO = factoryDAO;
     }
 
-    public UserService(UserDAO userDAO) {
-        this.userRepository = userDAO;
-    }
-
-    public User getUserAuthority(String email, String password)throws UserNotFoundException, IncorrectPasswordException {
-        try {
+    public User getUserAuthority(String email, String password)
+            throws UserNotFoundException, IncorrectPasswordException, DataBaseException{
+        try(UserDAO userRepository = factoryDAO.createUserDAO()){
             User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
             if(user.getPassword().equals(DigestUtils.md5Hex(password))){
                 return user;
             }
             throw new IncorrectPasswordException();
-        }catch (SQLException ex){
+        }catch (UserNotFoundException | IncorrectPasswordException ex){
+            throw ex;
+        }
+        catch (Exception ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
             throw new DataBaseException();
         }
@@ -54,13 +49,16 @@ public class UserService {
 
 
     public void changeIsActive(Long id)throws UserNotFoundException{
-        try{
+        try(UserDAO userRepository = factoryDAO.createUserDAO()){
             User user = userRepository.findReaderById(id)
                     .orElseThrow(UserNotFoundException::new);
 
             user.setActive(!user.isActive());
             userRepository.save(user);
-        }catch (SQLException ex){
+        }catch (UserNotFoundException ex){
+            throw ex;
+        }
+        catch (Exception ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
             throw new DataBaseException();
         }
@@ -68,18 +66,21 @@ public class UserService {
     }
 
     public User getUserByEmail(String email) throws UserNotFoundException{
-        try {
+        try(UserDAO userRepository = factoryDAO.createUserDAO()){
             return userRepository.findByEmail(email)
                     .orElseThrow(UserNotFoundException::new);
-        }catch (SQLException ex){
+        }catch (UserNotFoundException ex){
+            throw ex;
+        }
+        catch (Exception ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
             throw new DataBaseException();
         }
     }
 
-    public Page<User> getAllReaders(int page, int size, String searchQuery){
+    public Page<User> getAllReaders(int page, int size, String searchQuery)throws ReaderNotFoundException, DataBaseException{
         Pageable pageable = new Pageable("Name", true, page, size);
-        try{
+        try(UserDAO userRepository = factoryDAO.createUserDAO()){
             if(searchQuery.isBlank()){
                 return userRepository.findByRole(Role.READER, pageable);
             }
@@ -88,15 +89,17 @@ public class UserService {
                 throw new ReaderNotFoundException();
             }
             return user;
-        }catch (SQLException ex){
+        }catch (ReaderNotFoundException ex){
+            throw ex;
+        }
+        catch (Exception ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
             throw new DataBaseException();
         }
     }
 
-    public User signUpUser(UserDTO userDTO) throws EmailAlreadyExistException {
-
-        try{
+    public User signUpUser(UserDTO userDTO) throws EmailAlreadyExistException, DataBaseException {
+        try(UserDAO userRepository = factoryDAO.createUserDAO()){
             if(userRepository.findByEmail(userDTO.getEmail()).isPresent()){
                 throw new EmailAlreadyExistException();
             }
@@ -114,16 +117,17 @@ public class UserService {
 
             return userRepository.save(user);
 
-        }catch (SQLException ex){
+        }catch (EmailAlreadyExistException ex){
+            throw ex;
+        }
+        catch (Exception ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
             throw new DataBaseException();
         }
-
-
     }
 
-    public User updateUser(UserDTO userDTO) throws EmailAlreadyExistException {
-        try{
+    public User updateUser(UserDTO userDTO) throws UserNotFoundException {
+        try(UserDAO userRepository = factoryDAO.createUserDAO()){
             User userToUpdate = userRepository.findByEmail(userDTO.getEmail())
                     .orElseThrow(UserNotFoundException::new);
 
@@ -142,7 +146,10 @@ public class UserService {
                     .build();
             userRepository.save(user);
             return user;
-        }catch (SQLException ex){
+        }catch (UserNotFoundException ex){
+            throw ex;
+        }
+        catch (Exception ex){
             LOGGER.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
             throw new DataBaseException();
         }

@@ -15,7 +15,7 @@ public class DeletePeriodicalCommand implements Command {
     private final PeriodicalService periodicalService;
 
     public DeletePeriodicalCommand() {
-        this(PeriodicalService.getInstance());
+        this(new PeriodicalService());
     }
     public DeletePeriodicalCommand(PeriodicalService periodicalService) {
         this.periodicalService = periodicalService;

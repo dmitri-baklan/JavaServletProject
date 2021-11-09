@@ -30,15 +30,18 @@ import static org.mockito.Mockito.when;
 public class UserServiceTest{
 
     @Mock
+    FactoryDAO factoryDAO;
+    @Mock
     UserDAO userDAO;
     UserDTO userDTO;
     UserService userService;
     String existingEmail;
     String testPassword;
 
+
     public UserServiceTest(){
         MockitoAnnotations.initMocks(this);
-        this.userService = new UserService(userDAO);
+        this.userService = new UserService(factoryDAO);
     }
 
     @Before
@@ -58,6 +61,7 @@ public class UserServiceTest{
     @Test(expected = EmailAlreadyExistException.class)
     public void testSignUpUser_ShouldThrowEmailAlreadyExist() {
         try{
+            given(factoryDAO.createUserDAO()).willReturn(userDAO);
             given(userDAO.findByEmail(existingEmail)).willReturn(
                      Optional.of(User.builder().name(existingEmail).build()));
 
@@ -69,6 +73,7 @@ public class UserServiceTest{
     @Test(expected = DataBaseException.class)
     public void testSignUpUser_ShouldThrowSQLException() {
         try{
+            given(factoryDAO.createUserDAO()).willReturn(userDAO);
             given(userDAO.findByEmail(anyString())).willReturn(Optional.empty());
             when(userDAO.save(any(User.class))).thenThrow(SQLException.class);
         }catch (SQLException e){
@@ -79,6 +84,7 @@ public class UserServiceTest{
     @Test()
     public void testSignUpUser_PasswordArgument() {
         try{
+            given(factoryDAO.createUserDAO()).willReturn(userDAO);
             given(userDAO.findByEmail(anyString())).willReturn(Optional.empty());
             when(userDAO.save(any())).thenReturn(new User());
 
@@ -99,14 +105,25 @@ public class UserServiceTest{
 
     @Test()
     public void testChangeIsActive() {
+        User user = User.builder()
+                .id(1L)
+                .name("OldName")
+                .surname("OldSurname")
+                .email("TestEmail")
+                .password("1246")
+                .periodicals(new LinkedHashSet<>())
+                .role(Role.ADMINISTRATOR)
+                .isActive(true)
+                .balance(0L)
+                .subscriptions(0L)
+                .build();
         try{
-            given(userDAO.findReaderById(anyLong())).willReturn(
-                    Optional.of(User.builder().email("TestEmail").isActive(true).build()));
-            when(userDAO.save(any())).thenReturn(new User());
+            given(factoryDAO.createUserDAO()).willReturn(userDAO);
+            given(userDAO.findReaderById(anyLong())).willReturn(Optional.of(user));
         }catch (SQLException e){
             fail();
         }
-        userService.changeIsActive(anyLong());
+        userService.changeIsActive(0L);
         ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
         try{
             verify(userDAO).save(captor.capture());
@@ -119,6 +136,7 @@ public class UserServiceTest{
     @Test(expected = EmailAlreadyExistException.class)
     public void testGetUserByEmail_ShouldThrowEmailAlreadyExist() {
         try{
+            given(factoryDAO.createUserDAO()).willReturn(userDAO);
             given(userDAO.findByEmail(existingEmail)).willReturn(
                     Optional.of(User.builder().name(existingEmail).build()));
 
@@ -129,8 +147,8 @@ public class UserServiceTest{
     }
     @Test
     public void testGetUserByEmail_ShouldReturnUser() {
-        
         try{
+            given(factoryDAO.createUserDAO()).willReturn(userDAO);
             given(userDAO.findByEmail(existingEmail)).willReturn(
                     Optional.of(User.builder().email(existingEmail).build()));
 
@@ -148,6 +166,7 @@ public class UserServiceTest{
         users.add(user);
         Page<User> page = new Page<User>(users, 1, 1D);
         try{
+            given(factoryDAO.createUserDAO()).willReturn(userDAO);
             when(userDAO.findByEmail(eq(existingEmail), any())).thenReturn(page);
 
         }catch (SQLException e){
@@ -163,6 +182,7 @@ public class UserServiceTest{
         users.add(user);
         Page<User> page = new Page<User>(users, 1, 1D);
         try{
+            given(factoryDAO.createUserDAO()).willReturn(userDAO);
             when(userDAO.findByEmail(eq(existingEmail), any())).thenReturn(page);
 
         }catch (SQLException e){
@@ -177,6 +197,7 @@ public class UserServiceTest{
     public void testGetUserAuthority_ShouldReturnIncorrectPassword() {
         User user = User.builder().email(existingEmail).password(testPassword).build();
         try{
+            given(factoryDAO.createUserDAO()).willReturn(userDAO);
             when(userDAO.findByEmail((existingEmail))).thenReturn(Optional.of(user));
 
         }catch (SQLException e){
@@ -190,6 +211,7 @@ public class UserServiceTest{
         String encPassword = DigestUtils.md5Hex(testPassword);
         User user = User.builder().email(existingEmail).password(encPassword).build();
         try{
+            given(factoryDAO.createUserDAO()).willReturn(userDAO);
             when(userDAO.findByEmail((existingEmail))).thenReturn(Optional.of(user));
         }catch (SQLException e){
             fail();
@@ -214,6 +236,7 @@ public class UserServiceTest{
                 .subscriptions(0L)
                 .build();
         try{
+            given(factoryDAO.createUserDAO()).willReturn(userDAO);
             when(userDAO.findByEmail("TestEmail")).thenReturn(Optional.of(user));
             when(userDAO.save(any(User.class))).thenReturn(new User());
 

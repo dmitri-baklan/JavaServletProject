@@ -28,7 +28,7 @@ public class PeriodicalServiceTest {
     private static Periodical insertedPeriodical;
     private static DataSource dataSource;
     private static PeriodicalDAO periodicalDAO;
-    private static UserDAO userDAO;
+    //private static UserDAO userDAO;
     private static PeriodicalService periodicalService;
     private static FactoryDAO factoryDAO;
     @BeforeClass
@@ -46,12 +46,12 @@ public class PeriodicalServiceTest {
         dataSource = ds;
         factoryDAO = new JDBCFactoryDAO(dataSource);
         periodicalDAO = factoryDAO.createPeriodicalDAO();
-        userDAO = factoryDAO.createUserDAO();
+        //userDAO = factoryDAO.createUserDAO();
     }
 
     @Before
     public void beforeTest() {
-        PeriodicalService periodicalService = new PeriodicalService(factoryDAO, periodicalDAO, userDAO);
+        PeriodicalService periodicalService = new PeriodicalService(factoryDAO);
         try {
             insertedPeriodical = periodicalService.savePeriodical(
                     PeriodicalDTO.builder()
@@ -72,26 +72,26 @@ public class PeriodicalServiceTest {
 
     @Test(expected = PeriodicalAlreadyExistException.class)
     public void shouldThrowPeriodicalAlreadyExistException() {
-        PeriodicalService periodicalService = new PeriodicalService(factoryDAO, periodicalDAO, userDAO);
+        PeriodicalService periodicalService = new PeriodicalService(factoryDAO);
         periodicalService.savePeriodical(PeriodicalDTO.builder().name("TestName").build());
     }
 
     @Test(expected = PeriodicalAlreadyExistException.class)
     public void shouldThrowPeriodicalAlreadyExistExceptionWhenUpdate() {
-        PeriodicalService periodicalService = new PeriodicalService(factoryDAO, periodicalDAO, userDAO);
+        PeriodicalService periodicalService = new PeriodicalService(factoryDAO);
         periodicalService.updatePeriodical(PeriodicalDTO.builder().name("TestName").subject(Subject.SPORT).build(),
                 insertedPeriodical.getId()+1);
     }
 
     @Test(expected = PeriodicalNotFoundException.class)
     public void shouldThrowPeriodicalNotFoundException() {
-        PeriodicalService periodicalService = new PeriodicalService(factoryDAO, periodicalDAO, userDAO);
+        PeriodicalService periodicalService = new PeriodicalService(factoryDAO);
         periodicalService.getPeriodicalById(insertedPeriodical.getId()+1);
     }
 
     @Test
     public void shouldGetPagePeriodical() {
-        PeriodicalService periodicalService = new PeriodicalService(factoryDAO, periodicalDAO, userDAO);
+        PeriodicalService periodicalService = new PeriodicalService(factoryDAO);
         Page<Periodical> periodical = null;
         try{
              periodical = periodicalService.getAllPeriodicals("p_name",
@@ -105,7 +105,7 @@ public class PeriodicalServiceTest {
 
     @Test
     public void shouldGetEmptyPage() {
-        PeriodicalService periodicalService = new PeriodicalService(factoryDAO, periodicalDAO, userDAO);
+        PeriodicalService periodicalService = new PeriodicalService(factoryDAO);
         Page<Periodical> periodical = null;
         try{
             periodical = periodicalService.getAllPeriodicals("p_name",

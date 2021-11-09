@@ -21,7 +21,7 @@ public class ReadersCommand implements Command {
     private final UserService userService;
 
     public ReadersCommand() {
-        this(UserService.getInstance());
+        this(new UserService());
     }
 
     private ReadersCommand(UserService userService) {

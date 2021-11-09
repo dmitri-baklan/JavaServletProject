@@ -16,7 +16,7 @@ public class PagePeriodicalCommand implements Command {
     private PeriodicalService periodicalService;
 
     public PagePeriodicalCommand() {
-        this(PeriodicalService.getInstance());
+        this(new PeriodicalService());
     }
     public PagePeriodicalCommand(PeriodicalService periodicalService) {
         this.periodicalService = periodicalService;

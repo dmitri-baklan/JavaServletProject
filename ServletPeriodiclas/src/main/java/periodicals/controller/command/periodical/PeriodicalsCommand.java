@@ -23,7 +23,7 @@ public class PeriodicalsCommand implements Command {
     private final PeriodicalService periodicalService;
 
     public PeriodicalsCommand() {
-        this(PeriodicalService.getInstance());
+        this(new PeriodicalService());
     }
     public PeriodicalsCommand(PeriodicalService periodicalService) {
         this.periodicalService = periodicalService;

@@ -19,7 +19,7 @@ public class ReplenismentsCommand implements Command {
     private final ReplenishmentService replenishmentService;
 
     public ReplenismentsCommand() {
-        this(ReplenishmentService.getInstance());
+        this(new ReplenishmentService());
     }
 
     private ReplenismentsCommand(ReplenishmentService replenishmentService) {

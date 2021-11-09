@@ -21,7 +21,7 @@ public class ProfileReplenishmentCommand implements Command {
     private ReplenishmentService replenishmentService;
 
     public ProfileReplenishmentCommand() {
-        this(ReplenishmentService.getInstance());
+        this(new ReplenishmentService());
     }
     public ProfileReplenishmentCommand(ReplenishmentService periodicalService) {
         this.replenishmentService = periodicalService;

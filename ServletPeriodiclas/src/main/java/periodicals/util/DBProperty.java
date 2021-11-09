@@ -16,9 +16,7 @@ public class DBProperty {
     private Properties properties;
 
     private DBProperty(){
-
         properties = new Properties();
-
         try(InputStream inputStream = getClass().getClassLoader().getResourceAsStream(FILE_PATH)){
             properties.load(inputStream);
         }catch (IOException ex){
