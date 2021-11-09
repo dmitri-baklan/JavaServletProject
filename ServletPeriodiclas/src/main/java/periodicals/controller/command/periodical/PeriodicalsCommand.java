@@ -12,7 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PeriodicalsCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(PeriodicalsCommand.class.getName());
@@ -48,6 +51,7 @@ public class PeriodicalsCommand implements Command {
                 .forEach(p->user_subscribe.put(p.getName(),
                         p.getUsers().stream()
                                 .anyMatch(u->u.getEmail().equals(email))));
+
         Map<String, String> request_params = new HashMap<String, String>();
         request_params.put("sortField", sortField);
         request_params.put("subject", subject);

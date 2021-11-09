@@ -15,9 +15,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 public class JDBCUserDAO implements UserDAO {
     private static final Logger LOGGER = LoggerFactory.getLogger(JDBCUserDAO.class.getName());
@@ -84,6 +82,8 @@ public class JDBCUserDAO implements UserDAO {
            try(ResultSet res = statement.executeQuery()){
                 if(res.first()){
                     long pages = res.getLong("pages");
+
+
                     return new Page<User>(UserMapper.getUserSet(res, pageable.getLimit()),
                             (pageable.getOffset()/pageable.getLimit())+1,
                             Math.ceil((double) pages / pageable.getLimit()));
@@ -106,7 +106,12 @@ public class JDBCUserDAO implements UserDAO {
             try(ResultSet res = statement.executeQuery()){
                 LOGGER.info("RESULT SET: {}", res);
                 if(res.first()){
-                    return new Page<User>(UserMapper.getUserSet(res, pageable.getLimit()),
+                    Optional<User> user = Optional.of(UserMapper.extractFromResultSet(res));
+                    res.last();
+                    user.get().setPeriodicals(PeriodicalMapper.getPeriodicalSet(res, res.getRow()));
+                    Set<User> users = new LinkedHashSet<User>();
+                    user.ifPresent(users::add);
+                    return new Page<User>(users,
                             (pageable.getOffset()/pageable.getLimit())+1, 0D);
                 }
                 LOGGER.info("ResultSet is empty");
