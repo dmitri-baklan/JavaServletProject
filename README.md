@@ -59,4 +59,6 @@
 
 ## Схема базы данных
 
-![](./dbStructure.png)
+
+![](./dbStructure.PNG)
+
