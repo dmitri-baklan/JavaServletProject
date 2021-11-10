@@ -41,7 +41,7 @@ public class ProfileReplenishmentCommand implements Command {
         if(Objects.isNull(value) || value.isBlank()){
             LOGGER.error("Value[{}] are not valid", value);
             request.setAttribute(AttributeKey.ERROR_BLANK, "valid.replenishment.sum.blank");
-            return "/periodical/periodicalAdd.jsp";
+            return "/user/replenishment.jsp";
         }
         replenishmentDTO.setValue(Long.valueOf(value));
 

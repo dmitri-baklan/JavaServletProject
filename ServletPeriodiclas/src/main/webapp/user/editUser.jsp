@@ -20,25 +20,18 @@
                         <input type="text" class="form-control"
                                placeholder="<fmt:message key="form.signup.name"/>" name="name"
                                value="<c:out value="${userDTO.name}"/>">
-                        <c:if test="${errorStringName != null}">
-                            <div class="alert-danger">
-                                <c:set var="error" value="${errorStringName}"/>
-                                <fmt:message key="${error}"/>
-                            </div>
-                        </c:if>
                     </div>
                     <div class="col">
                         <input type="text" class="form-control"
                                placeholder="<fmt:message key="form.signup.surname"/>" name="surname"
                                value="<c:out value="${userDTO.surname}"/>">
-                        <c:if test="${errorStringName != null}">
-                            <div class="alert-danger">
-                                <c:set var="error" value="${errorStringName}"/>
-                                <fmt:message key="${error}"/>
-                            </div>
-                        </c:if>
-                    </div>
-
+                </div>
+                    <c:if test="${errorStringName != null}">
+                        <div class="alert-danger">
+                            <c:set var="error" value="${errorStringName}"/>
+                            <fmt:message key="${error}"/>
+                        </div>
+                    </c:if>
                 </div>
                 <div id="nameHelp" class="form-text" >
                     <fmt:message key="form.signup.name.help"/>
@@ -49,20 +42,12 @@
                            placeholder="<fmt:message key="form.signup.email"/>" name="email"
                            value="<c:out value="${userDTO.email}"/>"
                     hidden="true">
-                    <%--                        value="*{name}"--%>
-<%--                    <c:if test="${errorStringEmail != null}">--%>
-<%--                        <div class="alert-danger">--%>
-<%--                            <c:set var="error" value="${errorStringEmail}"/>--%>
-<%--                            <fmt:message key="${error}"/>--%>
-<%--                        </div>--%>
-<%--                    </c:if>--%>
                 </div>
                 <br>
                 <div class="col">
                     <input type="password" class="form-control"
                            placeholder="<fmt:message key="form.signup.password"/>" name="password"
                            value="<c:out value="${userDTO.password}"/>">
-                    <%--                        value="*{name}"--%>
                     <c:if test="${errorStringPassword != null}">
                         <div class="alert-danger">
                             <c:set var="error" value="${errorStringPassword}"/>
