@@ -79,13 +79,15 @@ public class JDBCPeriodicalDAO implements PeriodicalDAO {
     @Override
     public Page<Periodical> findAll(Pageable pageable)throws SQLException {
         try(PreparedStatement statement = connection.prepareStatement(
-                String.format(statements.getProperty("periodical.find.all"), pageable.getSortField(),pageable.isAscending()?"ASC":"DESC"),
+                String.format(statements.getProperty("periodical.find.all"),
+                        pageable.getSortField(),pageable.isAscending()?"ASC":"DESC",
+                        pageable.getSortField(),pageable.isAscending()?"ASC":"DESC"),
                 ResultSet.TYPE_SCROLL_SENSITIVE,
                 ResultSet.CONCUR_UPDATABLE)){
             PeriodicalMapper.setFindAllPreperadStatement(statement,pageable);
             try(ResultSet res = statement.executeQuery()){
                 if(res.first()){
-                    String str = res.getString("p_name");
+//                    String str = res.getString("p_name");
                     Long pages = res.getLong("pages");
                     Set<Periodical> periodicals = PeriodicalMapper.getPeriodicalSet(res, pageable.getLimit());
                     for(Periodical p : periodicals){
@@ -132,17 +134,24 @@ public class JDBCPeriodicalDAO implements PeriodicalDAO {
 
     @Override
     public Page<Periodical> findBySubject(Subject subj, Pageable pageable)throws SQLException {
-        try(PreparedStatement statement = connection.prepareStatement(statements.getProperty("periodical.filter.by.subject"),
+        try(PreparedStatement statement = connection.prepareStatement(
+                String.format(statements.getProperty("periodical.filter.by.subject"),
+                        pageable.getSortField(),pageable.isAscending()?"ASC":"DESC",
+                        pageable.getSortField(),pageable.isAscending()?"ASC":"DESC"),
                 ResultSet.TYPE_SCROLL_SENSITIVE,
                 ResultSet.CONCUR_UPDATABLE)){
             statement.setString(1, subj.name());
-            statement.setInt(2, pageable.getLimit());
-            statement.setInt(3, pageable.getOffset());
+            statement.setString(2, subj.name());
+            statement.setInt(3, pageable.getLimit());
+            statement.setInt(4, pageable.getOffset());
             try(ResultSet res = statement.executeQuery()){
                 if(res.first()){
                     Long pages = res.getLong("pages");
-                    return new Page<Periodical>(PeriodicalMapper.getPeriodicalSet(res, pageable.getLimit()),
-                            (pageable.getOffset()/pageable.getLimit())+1,
+                    Set<Periodical> periodicals = PeriodicalMapper.getPeriodicalSet(res, pageable.getLimit());
+                    for(Periodical p : periodicals){
+                        p.setUsers(UserMapper.getPeriodicalUserSet(res, pageable.getLimit(), p.getId()));
+                    }
+                    return new Page<Periodical>(periodicals, (pageable.getOffset()/pageable.getLimit())+1,
                             Math.ceil((double) pages / pageable.getLimit()));
                 }
                 LOGGER.info("ResultSet is empty");

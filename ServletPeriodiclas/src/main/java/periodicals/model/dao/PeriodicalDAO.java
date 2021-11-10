@@ -19,5 +19,6 @@ public interface PeriodicalDAO extends GenericDAO<Periodical>{
     Page<Periodical> findBySubject(Subject subj, Pageable pageable) throws SQLException;
 
     void deleteById(Long id)throws SQLException;
-    public void changeUserPeriodicalSubscription(User user, Periodical periodical)throws SQLException;
+
+    void changeUserPeriodicalSubscription(User user, Periodical periodical)throws SQLException;
 }

@@ -52,6 +52,9 @@ public class PeriodicalMapper {
         while((result.next()) && (periodicals.size() < limit)){
             if(result.getLong("p_id") > 0){
                 Periodical periodical = extractFromResultSet(result);
+                if(periodicals.stream().anyMatch(p-> p.getId() == periodical.getId())){
+                    continue;
+                }
                 periodicals.add(periodical);
             }
         }
